@@ -124,8 +124,14 @@ MASTER PLAN
 - start github repo [done: https://github.com/michael-dean-haynie/practalytix.git]
 - build app (lol)
   - User Auth
+    - Email
   - Input
   - Analytics
 
 
 
+
+
+pu@
+  - Modify migration to empty collection first
+  - Have an array of objects that quickly get itterated on and insert documents
