@@ -121,8 +121,11 @@ SCHEMA
 
 MASTER PLAN
 - Buy domain [done: practalytix.com]
-- start github repo
+- start github repo [done: https://github.com/michael-dean-haynie/practalytix.git]
 - build app (lol)
+  - User Auth
+  - Input
+  - Analytics
 
 
 
