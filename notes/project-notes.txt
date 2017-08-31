@@ -1,0 +1,128 @@
+Practalytix
+
+CONCEPT:
+A web based app for musicians to track analytics about their practice habbits
+
+FEATURES:
++ [MVP] Record practice habbits
+  - Real time practice session
+  - After-the-fact recording
+
++ [MVP] View analytics about practice habbits
+  - Time practiced
+    - sight reading
+    - technique
+    - theory
+    - method books
+    - focus items (recital piece)
+
++ Teacher-Student relationships
+  - Teachers can see student's analytics
+  - Some way to set goals
+
+
+
+
+SITE MAP
++ {/}
+  - Links
+    - Start new session / resume session
+    - Manage session
+
++ {/live} ({/live-session}?)
+  - Live page features
+    - Ongoing stopwatch for current session
+    - Ongoing analytics preview
+      ? Pie chart of activities
+        - Toggle to show paused time with other activities (default: off)
+      ? Timeline of session blocks
+    - Pause/Resume
+
+
++ {manage/sessions}
+  - Index page of sessions
+    - live/closed
+    - start/end timestamps (maybe just start timestamp and session length? How then to address 'paused' time?)
+
++ {manage/sessions/:id}
+  - Basically an analytics preview
+    - timeline
+    - piechart of activities
+  - update/delete buttons
+
++ {manage/sessions/create:id}
+  - For after the fact data entry. Same or very similar to update view
+  - start date/time
+  - build-able list of activity -> duration items (these will get translated into session blocks)
+
++ {manage/sessions/update:id}
+  - see create route
+
++ {manage/sessions/delete:id}
+  - confirmation / warning
+
++ {/analytics}
+  - A page with all the different analytics
+    - Line graph where you can select: 
+      - Date range or all recorded sessions
+      - Each activity to be toggled on or off
+        - These influence the calculated values. The totals are the sum of the selected activities. This way by selecting just one activity you can get specific info on that activity. Same for any combination.
+      - Calculated values (text off to the side?)
+        - Average total hours 
+        - Average total hours (date range)
+      - Toggle show hours per session/day/week/month/year
+        - this is what the x axis becomes
+
+
+    - Pie Chart showing time and percentage of time spent in different activities
+      - Attached to same date span as line graph
+
+    - Stats
+      - Attached to same date span as line graph
+      - Session count
+      - Total hours spent
+        - Total and broken down into activities
+      - Average session length (not including 'paused' time)
+
+
+
+
+SCHEMA
+
++ User
+  - First Name
+  - Last Name
+  - Email Address
+  - Password
+
++ Session
+  - User
+  - Start Timestamp
+  - End Timestamp
+  - Session Blocks
+
++ Session Block
+  - Session
+  - Session Block Activity
+  - Start Timestamp
+  - End Timestamp
+
++ Session Block Activity
+  * Thses might become managable later, but for now they're glorified enums
+    - Sight Reading
+    - Technique
+    - Theory
+    - Method Books
+    - Focused Repertoire
+  - Name
+  - Description
+
+
+
+MASTER PLAN
+- Buy domain [done: practalytix.com]
+- start github repo
+- build app (lol)
+
+
+
