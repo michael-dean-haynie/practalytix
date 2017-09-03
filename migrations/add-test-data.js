@@ -1,4 +1,5 @@
 require('dotenv').config();
+var bcrypt = require('bcrypt-nodejs');
 
 var mongoose = require('mongoose');
 mongoose.connect(process.env.DB_CONNECTION);
@@ -40,7 +41,7 @@ for(var i = 0; i < test_users.length; i++){
     first_name: d[0],
     family_name: d[1],
     email: d[2],
-    password: d[3],
+    password: bcrypt.hashSync(d[3]),
   });
   user.save();
 }

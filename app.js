@@ -11,6 +11,7 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 var mongoose = require('mongoose');
+var expressValidator = require('express-validator');
 
 // require models
 var User = require('./models/user');
@@ -35,6 +36,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(expressValidator());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
   cookie: { maxAge: 1000*60*2},
@@ -49,7 +51,7 @@ app.use(session({
 
 // authentication
 app.use(function(req, res, next){
-  req.session.user_id = '59ab5a6bfb08ce3840636140';
+  // req.session.user_id = '59ab5a6bfb08ce3840636140';
 
   // login page exempt
   if (req.path === '/login') return next();

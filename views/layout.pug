@@ -2,6 +2,12 @@ doctype html
 html
   head
     title= title
+
+    //- stylesheets
+    link(rel='stylesheet', href='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
     link(rel='stylesheet', href='/stylesheets/style.css')
+
+    //- scripts
   body
-    block content
+    div#main.container-fluid
+      block content

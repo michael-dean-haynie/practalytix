@@ -1,11 +1,19 @@
 var express = require('express');
 var router = express.Router();
 
-var User = require('./models/user');
+var authController = require('./controllers/authController');
 
-/* GET home page. */
+/*
+|-------------------
+| root
+|-------------------
+*/
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  res.redirect('/dashboard');
+});
+
+router.get('/dashboard', function(req, res, next){
+  res.render('dashboard', {title: 'Dashboard'});
 });
 
 /*
@@ -13,18 +21,7 @@ router.get('/', function(req, res, next) {
 | auth
 |-------------------
 */
-
-router.get('/login', function(req, res, next){
-  User.findById(req.session.user_id)
-  .exec(function(err, user){
-    if (err){
-      return next(new Error("Invalid session state. Try deleting cookies and trying again."));
-    }
-    if (user){
-      return res.redirect('/');
-    }
-    res.send("This is the login page!");
-  });
-});
+router.get('/login', authController.login_get);
+router.post('/login', authController.login_post);
 
 module.exports = router;
