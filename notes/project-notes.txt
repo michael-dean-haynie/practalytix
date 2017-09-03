@@ -133,5 +133,8 @@ MASTER PLAN
 
 
 pu@
-  - Modify migration to empty collection first
-  - Have an array of objects that quickly get itterated on and insert documents
+  - Figure out connect-mongo to store session data
+  - Build middleware piece that checks for authentication in session, redirects to login
+    - use bcrypt-nodejs
+    - use connect-mongo
+    - use express-session
