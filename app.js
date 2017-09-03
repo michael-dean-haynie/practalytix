@@ -16,7 +16,8 @@ var expressValidator = require('express-validator');
 // require models
 var User = require('./models/user');
 
-var routes = require('./routes');
+var rootRoutes = require('./routes/root');
+var authRoutes = require('./routes/auth');
 
 var app = express();
 
@@ -49,32 +50,9 @@ app.use(session({
   })
 }));
 
-// authentication
-app.use(function(req, res, next){
-  // req.session.user_id = '59ab5a6bfb08ce3840636140';
-
-  // login page exempt
-  if (req.path === '/login') return next();
-
-  // if session has valid user id, user is logged in.
-  if (req.session.user_id){
-    User.findById(req.session.user_id)
-      .exec(function(err, user){
-        if (err) return next(err);
-        if (!user){
-          return next(new Error('Invalid session state. Try deleting cookies and trying again.'));
-        } else {
-          return next();
-        }
-      });
-
-  } else{
-    res.redirect('/login');
-  }
-});
-
 // routes
-app.use('/', routes);
+app.use('/', rootRoutes);
+app.use('/auth', authRoutes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

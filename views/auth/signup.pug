@@ -1,0 +1,31 @@
+extends ../layout
+
+block content
+  h2 !{title}
+
+  form(action='/auth/signup', method="POST")
+    div.form-group
+      label.control-label(for='input-first-name') First Name
+      input#input-first-name.form-control(type='text', name='first_name' required=true placeholder='John' value=user ? user.first_name : '')
+    div.form-group
+      label.control-label(for='input-family-name') Family Name
+      input#input-family-name.form-control(type='text', name='family_name' required=true placeholder='Doe' value=user ? user.family_name : '')
+    div.form-group
+      label.control-label(for='input-email') Email
+      input#input-email.form-control(type='email', name='email' required=true placeholder='Email' value=user ? user.email : '') 
+    div.form-group
+      label.control-label(for='input-password') Password
+      input#input-password.form-control(type='password', name='password' required=true placeholder='Password' value=user ? user.password : '')
+    div.form-group
+      label.control-label(for='input-confirm-password') Confirm Password
+      input#input-confirm-password.form-control(type='password', name='confirm_password' required=true placeholder='Confirm Password' value=user ? user.confirm_password : '')
+    div.form-group.button-list
+      button.btn.btn-primary(type='submit') !{title}
+      a.btn.btn-default(href='/auth/signin') I already have an account!
+    dif.form-group
+      if  errors && errors.length
+        div.alert.alert-danger
+          ul
+            each error in errors
+              li !{error.msg}
+

@@ -125,16 +125,8 @@ MASTER PLAN
 - build app (lol)
   - User Auth
     - Email
+    - login
+    - fyp
+    - signup
   - Input
   - Analytics
-
-
-
-
-
-pu@
-  - Figure out connect-mongo to store session data
-  - Build middleware piece that checks for authentication in session, redirects to login
-    - use bcrypt-nodejs
-    - use connect-mongo
-    - use express-session
