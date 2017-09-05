@@ -12,12 +12,14 @@ var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 var mongoose = require('mongoose');
 var expressValidator = require('express-validator');
+var middleware = require('./middleware');
 
 // require models
 var User = require('./models/user');
 
 var rootRoutes = require('./routes/root');
 var authRoutes = require('./routes/auth');
+var sessionRoutes = require('./routes/session');
 
 var app = express();
 
@@ -52,7 +54,8 @@ app.use(session({
 
 // routes
 app.use('/', rootRoutes);
-app.use('/auth', authRoutes);
+app.use('/auth', middleware.auth, authRoutes);
+app.use('/sessions', middleware.authed, sessionRoutes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

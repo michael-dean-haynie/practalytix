@@ -5,15 +5,9 @@ var sessionsController = require('../controllers/sessionsController');
 
 /*
 |-------------------
-| root
+| sessions
 |-------------------
 */
-router.get('/', function(req, res, next) {
-  res.redirect('/dash');
-});
-
-router.get('/dash', function(req, res, next){
-  res.render('dash', {title: 'Dashboard'});
-});
+router.get('/', sessionsController.index_get);
 
 module.exports = router;

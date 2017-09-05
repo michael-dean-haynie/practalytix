@@ -1,0 +1,18 @@
+extends ../layout
+
+block content
+  h2 !{title}
+
+  table
+    thead
+      tr
+        td Date
+        td Activities
+        td Details
+    tbody
+      each session in sessions
+        tr
+          td= session.start
+          td Activities
+          td: a(href='#') details
+
