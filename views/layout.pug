@@ -10,5 +10,13 @@ html
     //- scripts
   body
     h1 Practalytix
+    ul
+      li: a(href='/') Dashboard
+      li: a(href='/auth/signup') Sign up
+      li: a(href='/auth/signin') Sign in
+      li: a(href='/auth/signout') Sign out 
+      li: a(href='/sessions') Manage Sessions
+
+
     div#main.container-fluid
       block content

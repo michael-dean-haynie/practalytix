@@ -46,7 +46,7 @@ app.use(session({
   saveUninitialized: false,
   store: new MongoStore({
     mongooseConnection: db,
-    collection: 'session',
+    collection: 'cookiesession',
   })
 }));
 

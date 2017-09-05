@@ -16,7 +16,7 @@ router.use(function(req, res, next){
   .exec(function(err, user){
     if (err) return next(err);
     if (!user){
-      return (req.path === '/signout') ? res.redirect('/signin') : next();
+      return (req.path === '/signout') ? res.redirect('/auth/signin') : next();
     } else {
       return (req.path === '/signout') ? next() : res.redirect('/');
     }
