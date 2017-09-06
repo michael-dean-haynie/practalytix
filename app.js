@@ -51,10 +51,12 @@ app.use(session({
     collection: 'cookiesession',
   })
 }));
+// determine auth status
+app.use(middleware.determineAuth);
 
 // routes
 app.use('/', rootRoutes);
-app.use('/auth', middleware.auth, authRoutes);
+app.use('/auth', middleware.noAuth, authRoutes);
 app.use('/sessions', middleware.authed, sessionRoutes);
 
 // catch 404 and forward to error handler

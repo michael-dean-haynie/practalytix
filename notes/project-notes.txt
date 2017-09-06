@@ -119,14 +119,10 @@ SCHEMA
 
 
 
-MASTER PLAN
-- Buy domain [done: practalytix.com]
-- start github repo [done: https://github.com/michael-dean-haynie/practalytix.git]
-- build app (lol)
-  - User Auth
-    - Email
-    - login
-    - fyp
-    - signup
-  - Input
-  - Analytics
+pu@
+- just got session blocks included into sessions
+
+
+TODO:
+- refactor middleware to use the determine auth middleware
+- dash needs to be renamed? More of a landing page for people to tell them what the app is about before we demand authentication

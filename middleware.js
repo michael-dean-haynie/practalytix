@@ -1,6 +1,6 @@
 var User = require('./models/user');
 
-exports.auth = function(req, res, next){ 
+exports.noAuth = function(req, res, next){ 
   // req.session.user_id = '59ab5a6bfb08ce3840636140'; 
   User.findById(req.session.user_id) 
   .exec(function(err, user){ 
@@ -14,10 +14,18 @@ exports.auth = function(req, res, next){
 };
 
 exports.authed = function(req, res, next){
-  console.log('HERE!');
   User.findById(req.session.user_id)
   .exec(function(err, user){
     if (err) return next(err);
     return user ? next() : res.redirect('/');
+  });
+};
+
+exports.determineAuth = function(req, res, next){
+  User.findById(req.session.user_id)
+  .exec(function(err, user){
+    if (err) return next(err);
+    res.locals.authed_user = user;
+    next();
   });
 };

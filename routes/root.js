@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var navData = require('../controllers/view-models/navData');
 
 var sessionsController = require('../controllers/sessionsController');
 
@@ -13,7 +14,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/dash', function(req, res, next){
-  res.render('dash', {title: 'Dashboard'});
+  res.render('dash', {title: "Title", navData: navData.get(res)});
 });
 
 module.exports = router;

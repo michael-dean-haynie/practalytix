@@ -1,5 +1,6 @@
 var bcrypt = require('bcrypt-nodejs');
 var User = require('../models/user');
+var navData = require('./view-models/navData');
 
 /*
 |-------------------
@@ -7,7 +8,7 @@ var User = require('../models/user');
 |-------------------
 */
 exports.signin_get = function(req, res, next){
-  res.render("auth/signin", {title: 'Sign in'});
+  res.render("auth/signin", {navData: navData.get(res)});
 };
 
 exports.signin_post = function(req, res, next){
@@ -37,7 +38,7 @@ exports.signin_post = function(req, res, next){
       }
     }
     if (errors.length){
-      return res.render('auth/signin', {title: 'Sign in', user: viewUser, errors: errors});
+      return res.render('auth/signin', {navData: navData.get(res), user: viewUser, errors: errors});
     } else{
       req.session.user_id = user._id;
       res.redirect('/');
@@ -51,7 +52,7 @@ exports.signin_post = function(req, res, next){
 |-------------------
 */
 exports.signup_get = function(req, res, next){
-  res.render('auth/signup', {title: 'Sign up'})
+  res.render('auth/signup', {navData: navData.get(res)})
 }
 
 exports.signup_post = function(req, res, next){
@@ -87,7 +88,7 @@ exports.signup_post = function(req, res, next){
     if (err) return next(err);
     if (user) errors.push({msg: 'That email is alreaady taken :/'});
     if (errors.length){
-      return res.render('auth/signup', {title: 'Sign up', user: viewUser, errors: errors});
+      return res.render('auth/signup', {navData: navData.get(res), user: viewUser, errors: errors});
     } else{
       var userToSave = new User({
         first_name: req.body.first_name,
