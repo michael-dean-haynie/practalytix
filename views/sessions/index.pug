@@ -3,6 +3,9 @@ extends ../layout
 block content
   h2 Sessions
 
+  ul
+    li: a(href='/sessions/create') Add a new session
+
   table.table.table-bordered
     thead
       tr
@@ -12,7 +15,15 @@ block content
     tbody
       each session in sessions
         tr
-          td= session.start
-          td Activities
-          td: a(href='#') details
+          td
+            span= session.time_details.startDateFormatted
+            br
+            span !{session.time_details.timeSpan} (!{session.time_details.duration})
+          td
+            each val, index in session.activity_list
+              if index === session.activity_list.length - 1
+                span= val
+              else
+                span= val + ', ' 
+          td: a(href=session.url) Session Details
 

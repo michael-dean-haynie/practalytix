@@ -1,0 +1,20 @@
+extends ../layout
+
+block content
+  h1 Add a new Session
+
+  form(action='/sessions/create', method="POST")
+  div.form-group
+    label.control-label(for='input-start-date-time') Date
+    input#input-start-date-time.form-control(type='datetime-local', name='start_date_time' required=true placeholder='' value=session ? session.time_details.startFormattedForInput : '')
+
+  //- div.form-group.button-list
+  //-   button.btn.btn-primary(type='submit') Sign up
+  //-   a.btn.btn-default(href='/auth/signin') I already have an account!
+
+  dif.form-group
+    if  errors && errors.length
+      div.alert.alert-danger
+        ul
+          each error in errors
+            li !{error.msg}

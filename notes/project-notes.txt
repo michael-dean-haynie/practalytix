@@ -120,9 +120,12 @@ SCHEMA
 
 
 pu@
-- just got session blocks included into sessions
+- add some configuration to log me in by default in dev env.
+- add any number of blocks to the session
+  - IDEA: Have a seperate field that just lists the block numbers, then use that to get the values from the post body.
 
 
 TODO:
 - refactor middleware to use the determine auth middleware
 - dash needs to be renamed? More of a landing page for people to tell them what the app is about before we demand authentication
+- Install FF for testing (particularly the date/time inputs)

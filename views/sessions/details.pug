@@ -1,0 +1,26 @@
+extends ../layout
+
+block content
+  h2 Session Details
+
+  dl
+    dt Date
+    dd= session.time_details.startDateFormatted
+
+    dt Time
+    dd !{session.time_details.timeSpan} (!{session.time_details.duration})
+
+  h3 Activities
+  table.table.table-bordered
+    thead
+      tr
+        td Time
+        td Activity
+        //- td Details
+    tbody
+      each block in session.blocks
+        tr
+          td
+            span !{block.time_details.timeSpan} (!{block.time_details.duration})
+          td
+            span= block.activity.name
