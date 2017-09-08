@@ -38,7 +38,6 @@ sessionSchema.virtual('time_details').get(function(){
     startDateFormatted: moment(this.start).format('dddd, MMMM Do YYYY'),
     timeSpan: moment(this.start).format('h:mm a') + ' - ' + moment(this.end).format('h:mm a'),
     duration: moment.duration(moment(this.end).diff(moment(this.start))).humanize(),
-    startFormattedForInput: helpers.formatDateForInput(this.start),
   };
 });
 

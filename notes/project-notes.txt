@@ -120,7 +120,6 @@ SCHEMA
 
 
 pu@
-- add some configuration to log me in by default in dev env.
 - add any number of blocks to the session
   - IDEA: Have a seperate field that just lists the block numbers, then use that to get the values from the post body.
 

@@ -1,7 +1,9 @@
 var bcrypt = require('bcrypt-nodejs');
 var Session = require('../models/session');
+var Activity = require('../models/activity');
 var navData = require('./view-models/navData');
 var helpers = require('../helpers');
+var SessionFormViewModel = require('./view-models/sessionFormViewModel').model;
 
 
 /*
@@ -50,11 +52,15 @@ exports.details_get = function(req, res, next){
 |-------------------
 */
 exports.create_get = function(req, res, next){
-  // create empty viewSession with some defaults
-  viewSession = Session({
-    start: Date.now(),
+  Activity.find(function(err, activities){
+    if (err) return next(err);
+    // create empty viewSession with some defaults
+    var sessionFormViewModel = new SessionFormViewModel()
+    sessionFormViewModel.populateFromDBModel(new Session());
+    sessionFormViewModel.populateActivityOptions(activities);
+
+    res.render('sessions/create', {navData: navData.get(res), session: sessionFormViewModel});
   });
-  res.render('sessions/create', {navData: navData.get(res), session: viewSession});
 };
 
 

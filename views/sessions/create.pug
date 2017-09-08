@@ -6,15 +6,28 @@ block content
   form(action='/sessions/create', method="POST")
   div.form-group
     label.control-label(for='input-start-date-time') Date
-    input#input-start-date-time.form-control(type='datetime-local', name='start_date_time' required=true placeholder='' value=session ? session.time_details.startFormattedForInput : '')
+    input#input-start-date-time.form-control(type='datetime-local', name='start_date_time' required=true placeholder='' value=session ? session.date : '')
+
+  div.form-group
+    label.control-label Blocks
+    div#session-blocks-input-container
+
 
   //- div.form-group.button-list
   //-   button.btn.btn-primary(type='submit') Sign up
   //-   a.btn.btn-default(href='/auth/signin') I already have an account!
 
-  dif.form-group
+  div.invisible
+    input#session-blocks-hidden-data(type='hidden' name='session_blocks_hidden_data' value=session ? session.getBlocksJSON() : '')
+
+    input#activity-options-data(type='hidden' value=session ? session.getActivityOptionsJSON() : '')
+
+  div.form-group
     if  errors && errors.length
       div.alert.alert-danger
         ul
           each error in errors
             li !{error.msg}
+
+block scripts
+  script(src='/scripts/handle-session-block-inputs.js')

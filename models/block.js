@@ -16,6 +16,7 @@ blockSchema.virtual('time_details').get(function(){
   return {
     timeSpan: moment(this.start).format('h:mm a') + ' - ' + moment(this.end).format('h:mm a'),
     duration: moment.duration(moment(this.end).diff(moment(this.start))).humanize(),
+    durationInMin: moment.duration(moment(this.end).diff(moment(this.start))).asMinutes(),
   };
 });
 
