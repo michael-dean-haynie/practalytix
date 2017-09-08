@@ -51,6 +51,9 @@ app.use(session({
     collection: 'cookiesession',
   })
 }));
+// dev auto signin
+app.use(middleware.devAutoSignin);
+
 // determine auth status
 app.use(middleware.determineAuth);
 
