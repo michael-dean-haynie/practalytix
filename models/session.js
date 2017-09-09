@@ -17,9 +17,9 @@ sessionSchema.virtual('blocks', {
   foreignField: 'session',
 });
 
-sessionSchema.virtual('url').get(function(){
-  return '/sessions/' + this._id;
-});
+sessionSchema.virtual('url_details').get(function(){ return '/sessions/' + this._id; });
+
+sessionSchema.virtual('url_edit').get(function(){ return '/sessions/edit/' + this._id });
 
 sessionSchema.virtual('activity_list').get(function(){
   return this.blocks.map(x => x.activity.name)

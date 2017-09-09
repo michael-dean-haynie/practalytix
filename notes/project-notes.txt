@@ -120,8 +120,8 @@ SCHEMA
 
 
 pu@
-- add any number of blocks to the session
-  - IDEA: Have a seperate field that just lists the block numbers, then use that to get the values from the post body.
+- figure out a naming convention!!!!! on the models
+- maight be easier to start on the session edit page before I finish the create page. So I can test the js generating the inputs
 
 
 TODO:
