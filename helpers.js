@@ -1,4 +1,4 @@
-var moment = require('moment');
+var moment = require('moment-timezone');
 
 exports.momentConfig = function(moment){
   // Set new thresholds
@@ -12,6 +12,6 @@ exports.momentConfig = function(moment){
   return moment;
 }
 
-exports.formatDateForInput = function(date){
-  return moment(date).format('YYYY-MM-DD[T]HH:mm');
-}
+// exports.formatDateForInput = function(date){
+//   return moment(date).utc().format('YYYY-MM-DD[T]HH:mm');
+// }

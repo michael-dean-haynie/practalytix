@@ -120,8 +120,9 @@ SCHEMA
 
 
 pu@
-- figure out a naming convention!!!!! on the models
-- maight be easier to start on the session edit page before I finish the create page. So I can test the js generating the inputs
+- modify virtual properties to use the user's timezone 
+- add the move up / down and add / delete functionality to the edit page.
+- work on validating and persisiting the form data on submit
 
 
 TODO:

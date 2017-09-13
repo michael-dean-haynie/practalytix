@@ -1,7 +1,7 @@
 require('dotenv').config();
 var bcrypt = require('bcrypt-nodejs');
 var async = require('async');
-var moment = require('moment');
+var moment = require('moment-timezone');
 
 var mongoose = require('mongoose');
 mongoose.connect(process.env.DB_CONNECTION);
@@ -37,12 +37,12 @@ function userMigration(callback){
     // insert documents 
     function(callback){
       var data = [
-        ['Ed', 'Sheeran', 'ed@sheeran.com', 'edsheeran'],
-        ['David', 'Guetta', 'david@guetta.com', 'davidguetta'],
-        ['Shawn', 'Mendes', 'shawn@mendes.com', 'shawnmendes'],
-        ['Bruno', 'Mars', 'bruno@mars.com', 'brunomars'],
-        ['Justin', 'Bieber', 'justin@bieber', 'justinbieber'],
-        ['Dean', 'Haynie', 'michael.dean.haynie@gmail.com', 'deanhaynie'],
+        ['Ed', 'Sheeran', 'US/Pacific', 'ed@sheeran.com', 'edsheeran'],
+        ['David', 'Guetta', 'US/Central', 'david@guetta.com', 'davidguetta'],
+        ['Shawn', 'Mendes', 'US/Eastern', 'shawn@mendes.com', 'shawnmendes'],
+        ['Bruno', 'Mars', 'Japan', 'bruno@mars.com', 'brunomars'],
+        ['Justin', 'Bieber', 'UTC', 'justin@bieber', 'justinbieber'],
+        ['Dean', 'Haynie', 'America/Phoenix', 'michael.dean.haynie@gmail.com', 'deanhaynie'],
       ];
 
       // build test models
@@ -52,8 +52,9 @@ function userMigration(callback){
         var user = User({
           first_name: d[0],
           family_name: d[1],
-          email: d[2],
-          password: bcrypt.hashSync(d[3]),
+          timezone: d[2],
+          email: d[3],
+          password: bcrypt.hashSync(d[4]),
         });
         models.push(user);
       }
@@ -184,7 +185,7 @@ function sessionMigration(callback){
           var maxLength = 120; // max length of session in minutes
           var blockLength = 15;
 
-          var pointer = moment().subtract(daysRecording, 'days');
+          var pointer = moment({seconds: 0, milliseconds: 0}).subtract(daysRecording, 'days');
           var stop = moment().subtract(1, 'days');
 
           async.whilst( // itterating sessions for user

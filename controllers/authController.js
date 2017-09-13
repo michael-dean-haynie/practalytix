@@ -1,6 +1,7 @@
 var bcrypt = require('bcrypt-nodejs');
 var User = require('../models/user');
 var navData = require('./view-models/navData');
+var moment = require('moment-timezone');
 
 /*
 |-------------------
@@ -52,13 +53,15 @@ exports.signin_post = function(req, res, next){
 |-------------------
 */
 exports.signup_get = function(req, res, next){
-  res.render('auth/signup', {navData: navData.get(res)})
+  var timezones = moment.tz.names(); // an array of all the moment-timezone supported timezones
+  res.render('auth/signup', {navData: navData.get(res), timezones})
 }
 
 exports.signup_post = function(req, res, next){
   // validate
   req.assert('first_name', 'First Name must be specified').notEmpty();
   req.assert('family_name', 'Family Name must be specified').notEmpty();
+  req.assert('timezone', 'Timezone must be specified').notEmpty();
   req.assert('email', 'Email must be specified').notEmpty();
   req.assert('email', 'Email must be a vailid email address').isEmail();
   req.assert('password', 'Password must be specified').notEmpty();
@@ -69,6 +72,7 @@ exports.signup_post = function(req, res, next){
   // escape values cause we're about to inject them into a new page if they fail
   req.sanitize('first_name').trim(); req.sanitize('first_name').escape();
   req.sanitize('family_name').trim(); req.sanitize('family_name').escape();
+  req.sanitize('timezone').trim();// req.sanitize('timezone').escape(); // this was escaping the slashes in the timezones in the db
   req.sanitize('email').trim(); req.sanitize('email').escape();
   req.sanitize('password').trim(); req.sanitize('password').escape();
   req.sanitize('confirm_password').trim(); req.sanitize('confirm_password').escape(); 
@@ -78,6 +82,7 @@ exports.signup_post = function(req, res, next){
   viewUser = new User({
     first_name: req.body.first_name,
     family_name: req.body.family_name,
+    timezone: req.body.timezone,
     email: req.body.email,
     password: req.body.password,
     confirm_password: req.body.confirm_password,
@@ -88,11 +93,13 @@ exports.signup_post = function(req, res, next){
     if (err) return next(err);
     if (user) errors.push({msg: 'That email is alreaady taken :/'});
     if (errors.length){
-      return res.render('auth/signup', {navData: navData.get(res), user: viewUser, errors: errors});
+      var timezones = moment.tz.names(); // an array of all the moment-timezone supported timezones
+      return res.render('auth/signup', {navData: navData.get(res), user: viewUser, timezones, errors: errors});
     } else{
       var userToSave = new User({
         first_name: req.body.first_name,
         family_name: req.body.family_name,
+        timezone: req.body.timezone,
         email: req.body.email,
         password: bcrypt.hashSync(req.body.password),
       });

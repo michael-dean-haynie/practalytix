@@ -11,6 +11,15 @@ block content
       label.control-label(for='input-family-name') Family Name
       input#input-family-name.form-control(type='text', name='family_name' required=true placeholder='Doe' value=user ? user.family_name : '')
     div.form-group
+      label.control-label(for='input-timezone') Timezone
+      select#input-timezone.form-control(name='timezone')
+        option(value='') Select Your Timezone
+        each tz in timezones
+          if user && user.timezone && (user.timezone == tz)
+            option(value=tz selected='selected') !{tz}
+          else
+            option(value=tz) !{tz}
+    div.form-group
       label.control-label(for='input-email') Email
       input#input-email.form-control(type='email', name='email' required=true placeholder='Email' value=user ? user.email : '') 
     div.form-group

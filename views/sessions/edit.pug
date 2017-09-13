@@ -9,7 +9,7 @@ block content
   form(action=session.dbModel.url_edit, method="POST")
     div.form-group
       label.control-label(for='input-start-date-time') Date
-      input#input-start-date-time.form-control(type='datetime-local', name='start_date_time' required=true placeholder='' value=session ? session.date : '')
+      input#input-start-date-time.form-control(type='datetime-local', name='start_date_time' required=true placeholder='' value='')
 
     div.form-group
       label.control-label Blocks
@@ -25,6 +25,8 @@ block content
 
       input#activity-options-data(type='hidden' value=session ? session.getActivityOptionsJSON() : '')
 
+      input#utc-session-start-data(type='hidden' value=session ? session.date : 'food')
+
     div.form-group
       if  errors && errors.length
         div.alert.alert-danger
@@ -34,3 +36,4 @@ block content
 
 block scripts
   script(src='/scripts/handle-session-block-inputs.js')
+  script(src='/scripts/handle-input-timezones.js')

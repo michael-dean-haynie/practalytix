@@ -5,6 +5,7 @@ var navData = require('./view-models/navData');
 var helpers = require('../helpers');
 var SessionFormViewModel = require('./view-models/sessionFormViewModel').model;
 var async = require('async');
+var moment = require('moment-timezone');
 
 
 /*
@@ -94,6 +95,7 @@ exports.edit_get = function(req, res, next){
       var sessionFormViewModel = new SessionFormViewModel();
       sessionFormViewModel.populateActivityOptions(results[0]);
       sessionFormViewModel.populateFromDBModel(results[1]);
+      console.log(sessionFormViewModel);
 
       res.render('sessions/edit', {navData: navData.get(res), session: sessionFormViewModel});
   });
@@ -121,18 +123,28 @@ exports.edit_post = function(req, res, next){
     ],
     function(err, results){
       if (err) return next(err);
-
+      var activities = results[0];
+      var session = results[1];
+      var startDateTime = req.body.start_date_time;
+      var sessionBlocks = req.body.session_blocks_hidden_data;
+      console.log(session.start);
+      console.log(startDateTime);
+      console.log(new Date(startDateTime));
+      console.log(moment(startDateTime).format('YYYY-MM-DD[T]HH:mm'));
+      console.log(JSON.parse(sessionBlocks));
+      
       // validate form data
       errors = [];
       errors.push({msg: 'This is a debug error'});
 
-      console.log(JSON.parse(req.body.session_blocks_hidden_data));
+      session.start = new Date(startDateTime);
+
 
 
       if (errors.length){
         var sessionFormViewModel = new SessionFormViewModel();
-        sessionFormViewModel.populateActivityOptions(results[0]);
-        sessionFormViewModel.populateFromDBModel(results[1]);
+        sessionFormViewModel.populateActivityOptions(activities);
+        sessionFormViewModel.populateFromDBModel(session);
 
         res.render('sessions/edit', {navData: navData.get(res), session: sessionFormViewModel, errors: errors});
       }

@@ -8,7 +8,7 @@ exports.model = function SessionFormViewModel(){
   this.dbModel = null;
 
   this.populateFromDBModel = function(model){
-    this.date = helpers.formatDateForInput(model.start || Date.now());
+    this.date = model.start;
     this.blocks = model.blocks.map(function(x){
       var blockFormViewModel = new BlockFormViewModel();
       blockFormViewModel.populateFromDBModel(x);

@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var helpers = require('../helpers');
-var moment = helpers.momentConfig(require('moment'));
+var moment = helpers.momentConfig(require('moment-timezone'));
 
 var Block = require('./block');
 
