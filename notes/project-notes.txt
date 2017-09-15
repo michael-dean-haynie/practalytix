@@ -120,7 +120,7 @@ SCHEMA
 
 
 pu@
-- modify virtual properties to use the user's timezone 
+- modify virtual properties to use the user's timezone still needed on details/edit/create? pages
 - add the move up / down and add / delete functionality to the edit page.
 - work on validating and persisiting the form data on submit
 

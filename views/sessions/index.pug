@@ -16,14 +16,14 @@ block content
       each session in sessions
         tr
           td
-            span= session.time_details.startDateFormatted
+            span= session.timeDetails.startDateFormatted
             br
-            span !{session.time_details.timeSpan} (!{session.time_details.duration})
+            span !{session.timeDetails.timeSpan} (!{session.timeDetails.duration})
           td
-            each val, index in session.activity_list
-              if index === session.activity_list.length - 1
+            each val, index in session.activityList
+              if index === session.activityList.length - 1
                 span= val
               else
                 span= val + ', ' 
-          td: a(href=session.url_details) Session Details
+          td: a(href=session.urlDetails) Session Details
 

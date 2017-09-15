@@ -9,6 +9,7 @@ exports.get = function(res){
     navData.push({label: 'Sign In', target: '/auth/signin'});
     navData.push({label: 'Sign Up', target: '/auth/signup'});
   } else { 
+    navData.push({label: new String('Signed in as '+res.locals.authed_user.email), target: '#'});
     navData.push({label: 'Sign Out', target: '/auth/signout'});
   }
 

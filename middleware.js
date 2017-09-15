@@ -29,7 +29,7 @@ exports.devAutoSignin = function(req, res, next){
           if (err) return next(err);
           // if not signed in, sign in as random user
           if (!user){
-            var emails = ['bruno@mars.com', 'ed@sheeran.com']; // emails of users to pick from
+            var emails = ['bruno@mars.com', 'ed@sheeran.com', 'david@guetta.com', 'shawn@mendes.com', 'justin@bieber', 'michael.dean.haynie@gmail.com']; // emails of users to pick from
             User.find({email: emails}, function(err, users){
               if (err) return next(err);
               var selectedUser = users[Math.floor(Math.random()*users.length)];

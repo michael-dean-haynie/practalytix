@@ -4,6 +4,7 @@ var helpers = require('../helpers');
 var moment = helpers.momentConfig(require('moment-timezone'));
 
 var Block = require('./block');
+var User = require('./user');
 
 var sessionSchema = new Schema({
   user: {type: Schema.ObjectId, ref: 'User', required: true},
@@ -11,17 +12,17 @@ var sessionSchema = new Schema({
   end: {type: Date},
 }, {collection: 'session'});
 
+// virtual fields
 sessionSchema.virtual('blocks', {
   ref: 'Block',
   localField: '_id',
   foreignField: 'session',
 });
 
-sessionSchema.virtual('url_details').get(function(){ return '/sessions/' + this._id; });
+sessionSchema.virtual('urlDetails').get(function(){ return '/sessions/' + this._id; });
+sessionSchema.virtual('urlEdit').get(function(){ return '/sessions/edit/' + this._id });
 
-sessionSchema.virtual('url_edit').get(function(){ return '/sessions/edit/' + this._id });
-
-sessionSchema.virtual('activity_list').get(function(){
+sessionSchema.virtual('activityList').get(function(){
   return this.blocks.map(x => x.activity.name)
     // remove "Paused"
     .filter(x => x != "Paused")
@@ -32,13 +33,18 @@ sessionSchema.virtual('activity_list').get(function(){
     });
 });
 
-sessionSchema.virtual('time_details').get(function(){
+sessionSchema.virtual('timeDetails').get(function(){
   moment.relativeTimeRounding(x => x); // remove rounding
   return {
-    startDateFormatted: moment(this.start).format('dddd, MMMM Do YYYY'),
-    timeSpan: moment(this.start).format('h:mm a') + ' - ' + moment(this.end).format('h:mm a'),
+    startDateFormatted: moment(this.start).tz(this.user.timezone).format('dddd, MMMM Do YYYY'),
+    timeSpan: moment(this.start).tz(this.user.timezone).format('h:mm a') + ' - ' + moment(this.end).tz(this.user.timezone).format('h:mm a'),
     duration: moment.duration(moment(this.end).diff(moment(this.start))).humanize(),
   };
 });
+
+// hooks
+function populateUser(next){ this.populate('user'); next();}
+
+sessionSchema.pre('find', populateUser);
 
 module.exports = mongoose.model('Session', sessionSchema);
