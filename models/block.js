@@ -12,12 +12,19 @@ var blockSchema = new Schema({
   activity: {type: Schema.ObjectId, ref: 'Activity', required: true},
 }, {collection: 'block'});
 
-blockSchema.virtual('time_details').get(function(){
+blockSchema.virtual('timeDetails').get(function(){
   return {
-    timeSpan: moment(this.start).format('h:mm a') + ' - ' + moment(this.end).format('h:mm a'),
+    timeSpan: moment(this.start).tz('utc').format('h:mm a') + ' - ' + moment(this.end).tz('utc').format('h:mm a'),
     duration: moment.duration(moment(this.end).diff(moment(this.start))).humanize(),
     durationInMin: moment.duration(moment(this.end).diff(moment(this.start))).asMinutes(),
   };
 });
+
+// hooks
+function populateSession(next){ this.populate('session'); next();}
+
+blockSchema.pre('find', populateSession);
+blockSchema.pre('findById', populateSession);
+
 
 module.exports = mongoose.model('Block', blockSchema);

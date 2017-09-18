@@ -4,14 +4,14 @@ block content
   h2 Session Details
   
   ul
-    li: a(href=session.url_edit) Edit Session
+    li: a(href=session.urlEdit) Edit Session
 
   dl
     dt Date
-    dd= session.time_details.startDateFormatted
+    dd= session.timeDetails.startDateFormatted
 
     dt Time
-    dd !{session.time_details.timeSpan} (!{session.time_details.duration})
+    dd !{session.timeDetails.timeSpan} (!{session.timeDetails.duration})
 
   h3 Activities
   table.table.table-bordered
@@ -24,6 +24,6 @@ block content
       each block in session.blocks
         tr
           td
-            span !{block.time_details.timeSpan} (!{block.time_details.duration})
+            span !{block.timeDetails.timeSpan} (!{block.timeDetails.duration})
           td
             span= block.activity.name
