@@ -50,8 +50,8 @@ function userMigration(callback){
       for(var i = 0; i < data.length; i++){
         d = data[i];
         var user = User({
-          first_name: d[0],
-          family_name: d[1],
+          firstName: d[0],
+          familyName: d[1],
           timezone: d[2],
           email: d[3],
           password: bcrypt.hashSync(d[4]),

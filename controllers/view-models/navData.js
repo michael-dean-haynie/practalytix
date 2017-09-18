@@ -2,6 +2,7 @@ var User = require('../../models/user');
 
 
 exports.get = function(res){
+  var user = res.locals.authed_user;
   var navData = [];
   navData.push({label: 'Dashboard', target: '/dash'});
 
@@ -9,7 +10,7 @@ exports.get = function(res){
     navData.push({label: 'Sign In', target: '/auth/signin'});
     navData.push({label: 'Sign Up', target: '/auth/signup'});
   } else { 
-    navData.push({label: new String('Signed in as '+res.locals.authed_user.email), target: '#'});
+    navData.push({label: new String('Signed in as '+user.firstName+' '+user.familyName+' ('+user.timezone+')'), target: '#'});
     navData.push({label: 'Sign Out', target: '/auth/signout'});
   }
 

@@ -1,14 +1,15 @@
+var moment = require('moment-timezone');
 var helpers = require('../../helpers');
 var BlockFormViewModel = require('./blockFormViewModel').model;
 
 exports.model = function SessionFormViewModel(){
-  this.date = '';
+  this.startDateTime = '';
   this.blocks = [];
   this.activityOptions = [];
   this.dbModel = null;
 
   this.populateFromDBModel = function(model){
-    this.date = model.start;
+    this.startDateTime = moment(model.start).tz(model.user.timezone).format('YYYY-MM-DD[T]HH:mm');
     this.blocks = model.blocks.map(function(x){
       var blockFormViewModel = new BlockFormViewModel();
       blockFormViewModel.populateFromDBModel(x);

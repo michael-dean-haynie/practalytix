@@ -15,6 +15,7 @@ var moment = require('moment-timezone');
 */
 exports.index_get = function(req, res, next){
   Session.find({user: req.session.user_id})
+    .populate('user')
     .populate({
       path: 'blocks',
       populate: {
@@ -24,7 +25,6 @@ exports.index_get = function(req, res, next){
     .sort({start: 'desc'})
     .exec(function(err, sessions){
       if (err) {console.log(err); return next(err)};
-      console.log(sessions[0].timeDetails)
       res.render('sessions/index', {navData: navData.get(res), sessions: sessions});
     });
 };
@@ -36,6 +36,7 @@ exports.index_get = function(req, res, next){
 */
 exports.details_get = function(req, res, next){
   Session.findById(req.params.sessionId)
+    .populate('user')
     .populate({
       path: 'blocks',
       populate: {
@@ -44,7 +45,6 @@ exports.details_get = function(req, res, next){
     })
     .exec(function(err, session){
       if (err) {console.log(err); return next(err)};
-      console.log(session.timeDetails);
       res.render('sessions/details', {navData: navData.get(res), session: session});
     });
 };
@@ -80,6 +80,7 @@ exports.edit_get = function(req, res, next){
       },
       function(callback){
         Session.findById(req.params.sessionId)
+          .populate('user')
           .populate({
             path: 'blocks',
             populate: {
@@ -111,6 +112,7 @@ exports.edit_post = function(req, res, next){
       },
       function(callback){
         Session.findById(req.params.sessionId)
+          .populate('user')
           .populate({
             path: 'blocks',
             populate: {

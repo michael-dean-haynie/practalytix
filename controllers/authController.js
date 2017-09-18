@@ -59,8 +59,8 @@ exports.signup_get = function(req, res, next){
 
 exports.signup_post = function(req, res, next){
   // validate
-  req.assert('first_name', 'First Name must be specified').notEmpty();
-  req.assert('family_name', 'Family Name must be specified').notEmpty();
+  req.assert('firstName', 'First Name must be specified').notEmpty();
+  req.assert('familyName', 'Family Name must be specified').notEmpty();
   req.assert('timezone', 'Timezone must be specified').notEmpty();
   req.assert('email', 'Email must be specified').notEmpty();
   req.assert('email', 'Email must be a vailid email address').isEmail();
@@ -70,8 +70,8 @@ exports.signup_post = function(req, res, next){
   req.assert('confirm_password', 'Passwords must match').equals(req.body.password);
 
   // escape values cause we're about to inject them into a new page if they fail
-  req.sanitize('first_name').trim(); req.sanitize('first_name').escape();
-  req.sanitize('family_name').trim(); req.sanitize('family_name').escape();
+  req.sanitize('firstName').trim(); req.sanitize('firstName').escape();
+  req.sanitize('familyName').trim(); req.sanitize('familyName').escape();
   req.sanitize('timezone').trim();// req.sanitize('timezone').escape(); // this was escaping the slashes in the timezones in the db
   req.sanitize('email').trim(); req.sanitize('email').escape();
   req.sanitize('password').trim(); req.sanitize('password').escape();
@@ -80,8 +80,8 @@ exports.signup_post = function(req, res, next){
   errors = req.validationErrors() || [];
 
   viewUser = new User({
-    first_name: req.body.first_name,
-    family_name: req.body.family_name,
+    firstName: req.body.firstName,
+    familyName: req.body.familyName,
     timezone: req.body.timezone,
     email: req.body.email,
     password: req.body.password,
@@ -97,8 +97,8 @@ exports.signup_post = function(req, res, next){
       return res.render('auth/signup', {navData: navData.get(res), user: viewUser, timezones, errors: errors});
     } else{
       var userToSave = new User({
-        first_name: req.body.first_name,
-        family_name: req.body.family_name,
+        firstName: req.body.firstName,
+        familyName: req.body.familyName,
         timezone: req.body.timezone,
         email: req.body.email,
         password: bcrypt.hashSync(req.body.password),

@@ -35,7 +35,6 @@ sessionSchema.virtual('activityList').get(function(){
 
 sessionSchema.virtual('timeDetails').get(function(){
   moment.relativeTimeRounding(x => x); // remove rounding
-  console.log(this.user);
   return {
     startDateFormatted: moment(this.start).tz('utc').format('dddd, MMMM Do YYYY'),
     timeSpan: moment(this.start).tz(this.user.timezone).format('h:mm a') + ' - ' + moment(this.end).tz(this.user.timezone).format('h:mm a'),
@@ -43,10 +42,10 @@ sessionSchema.virtual('timeDetails').get(function(){
   };
 });
 
-// hooks
-function populateUser(next){ this.populate('user'); next();}
+// // hooks
+// function populateUser(next){ this.populate('user'); next();}
 
-sessionSchema.pre('find', populateUser);
-sessionSchema.pre('findById', populateUser);
+// sessionSchema.pre('find', populateUser);
+// sessionSchema.pre('findById', populateUser);
 
 module.exports = mongoose.model('Session', sessionSchema);

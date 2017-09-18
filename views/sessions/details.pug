@@ -24,6 +24,6 @@ block content
       each block in session.blocks
         tr
           td
-            span !{block.timeDetails.timeSpan} (!{block.timeDetails.duration})
+            span !{block.timeSpan(session.user.timezone)} (!{block.timeDetails.duration})
           td
             span= block.activity.name

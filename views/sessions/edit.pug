@@ -4,12 +4,12 @@ block content
   h1 Edit a Session
 
   ul
-    li: a(href=session.dbModel.url_details) Session Details
+    li: a(href=session.dbModel.urlDetails) Session Details
 
-  form(action=session.dbModel.url_edit, method="POST")
+  form(action=session.dbModel.urlEdit, method="POST")
     div.form-group
       label.control-label(for='input-start-date-time') Date
-      input#input-start-date-time.form-control(type='datetime-local', name='start_date_time' required=true placeholder='' value='')
+      input#input-start-date-time.form-control(type='datetime-local', name='startDateTime' required=true placeholder='' value='')
 
     div.form-group
       label.control-label Blocks
@@ -18,14 +18,14 @@ block content
 
     div.form-group.button-list
       button.btn.btn-primary(type='submit') Save
-      a.btn.btn-default(href=session.dbModel.url_details) Cancel
+      a.btn.btn-default(href=session.dbModel.urlDetails) Cancel
 
     div.invisible
       input#session-blocks-hidden-data(type='hidden' name='session_blocks_hidden_data' value=session ? session.getBlocksJSON() : '')
 
       input#activity-options-data(type='hidden' value=session ? session.getActivityOptionsJSON() : '')
 
-      input#utc-session-start-data(type='hidden' value=session ? session.date : 'food')
+      input#session-start-data(type='hidden' value=session.startDateTime)
 
     div.form-group
       if  errors && errors.length
