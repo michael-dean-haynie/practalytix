@@ -6,6 +6,8 @@ var helpers = require('../helpers');
 var SessionFormViewModel = require('./view-models/sessionFormViewModel').model;
 var async = require('async');
 var moment = require('moment-timezone');
+var mongoose = require('mongoose');
+var Block = require('../models/block');
 
 
 /*
@@ -128,20 +130,65 @@ exports.edit_post = function(req, res, next){
       if (err) return next(err);
       var activities = results[0];
       var session = results[1];
-      var startDateTime = req.body.start_date_time;
-      var sessionBlocks = req.body.session_blocks_hidden_data;
-      console.log(session.start);
-      console.log(startDateTime);
-      console.log(new Date(startDateTime));
-      console.log(moment(startDateTime).format('YYYY-MM-DD[T]HH:mm'));
-      console.log(JSON.parse(sessionBlocks));
+      var startDateTime = req.body.startDateTime;
+
+      // Set as user's timezone and convert from there to UTC so the sessionFormViewModel can convert back
+      moment.tz.setDefault(res.locals.authed_user.timezone);
+      var startDateTimeUTC = moment(startDateTime).utc().format('YYYY-MM-DD[T]HH:mm');
+      moment.tz.setDefault();
+
+      var sessionBlocks = JSON.parse(req.body.sessionBlocksHiddenData);
+
+      // console.log(session.start);
+      // console.log(startDateTime);
+      // console.log(startDateTimeUTC);
+      console.log('IN');
+      console.log(sessionBlocks);
       
       // validate form data
       errors = [];
       errors.push({msg: 'This is a debug error'});
 
-      session.start = new Date(startDateTime);
+      // update session start from query with data from form
+      session.start = new Date(startDateTimeUTC);
 
+      // remove blocks from the queried session that aren't returned in the form
+      // session.blocks = session.blocks.filter(x => sessionBlocks.map(y => y.dbModel ? y.dbModel._id : null).includes(x._id.toString()));
+      var newSessionBlocks = [];
+
+      // Update block times based off session start and blocks order.
+      var minPastStart = 0;
+      for(var i = 0; i < sessionBlocks.length; i++){
+        var inputBlock = sessionBlocks[i];
+
+        var blockStart = moment(session.start).utc().add(minPastStart, 'minutes').toDate();
+        var blockEnd = moment(session.start).utc().add(minPastStart, 'minutes').add(inputBlock.durationInMin, 'minutes').toDate();
+        var blockActivity = new mongoose.Types.ObjectId(inputBlock.activity);
+        var dbBlock = null;
+
+        if(inputBlock.dbModel){
+          dbBlock = session.blocks.filter(x => x._id.toString() == inputBlock.dbModel._id)[0];
+          dbBlock.start = blockStart;
+          dbBlock.end = blockEnd;
+          dbBlock.activity = blockActivity;
+        }
+        else{
+          dbBlock = new Block({
+            start: blockStart,
+            end: blockEnd,
+            session: session._id,
+            activity: blockActivity,
+          });
+        }
+
+        newSessionBlocks.push(dbBlock);
+        minPastStart = minPastStart + inputBlock.durationInMin;
+      }
+
+      session.blocks = newSessionBlocks;
+
+      console.log('OUT');
+      console.log(session.blocks);
 
 
       if (errors.length){

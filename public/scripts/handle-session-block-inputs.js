@@ -12,6 +12,7 @@ $(function($){ // on document ready
   function bindEventHandlers(){
     $('.ses-bk input, .ses-bk select').on('change', updateBlockData);
     $('#add-bk-btn').on('click', addBlock);
+    $('.remove-bk-btn').on('click', function(){removeBlock($(this).data('bk-idx'))});
   }
 
   function updateBlockInputs(){
@@ -44,6 +45,7 @@ $(function($){ // on document ready
         </select>\
         <input type='number' id='ses-bk-min-"+bi+"' value='"+(block.durationInMin || 0)+"'></input>\
         <label>minutes</label>\
+        <button type='button' class='remove-bk-btn' data-bk-idx='"+bi+"'>remove</button>\
       </div>\
       ";
     }
@@ -95,7 +97,25 @@ $(function($){ // on document ready
 
     // update the block inputs
     updateBlockInputs();
-
   }
+
+  function removeBlock(index){
+    // read data from hidden input
+    var blocksData = JSON.parse(blocksDataInput.val());
+    var newData = [];
+
+    for(var i = 0; i < blocksData.length; i++){
+      if (i == index) continue;
+      newData.push(blocksData[i]);
+    }
+
+    // update the hidden input
+    blocksDataInput.val(JSON.stringify(newData));
+    
+    // update the block inputs
+    updateBlockInputs();    
+  }
+
+
 
 });

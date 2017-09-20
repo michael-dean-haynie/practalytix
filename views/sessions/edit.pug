@@ -21,7 +21,7 @@ block content
       a.btn.btn-default(href=session.dbModel.urlDetails) Cancel
 
     div.invisible
-      input#session-blocks-hidden-data(type='hidden' name='session_blocks_hidden_data' value=session ? session.getBlocksJSON() : '')
+      input#session-blocks-hidden-data(type='hidden' name='sessionBlocksHiddenData' value=session ? session.getBlocksJSON() : '')
 
       input#activity-options-data(type='hidden' value=session ? session.getActivityOptionsJSON() : '')
 
