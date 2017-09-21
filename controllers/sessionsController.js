@@ -99,7 +99,6 @@ exports.edit_get = function(req, res, next){
       var sessionFormViewModel = new SessionFormViewModel();
       sessionFormViewModel.populateActivityOptions(results[0]);
       sessionFormViewModel.populateFromDBModel(results[1]);
-      console.log(sessionFormViewModel);
 
       res.render('sessions/edit', {navData: navData.get(res), session: sessionFormViewModel});
   });
@@ -142,15 +141,15 @@ exports.edit_post = function(req, res, next){
       // console.log(session.start);
       // console.log(startDateTime);
       // console.log(startDateTimeUTC);
-      console.log('IN');
-      console.log(sessionBlocks);
+      // console.log('IN');
+      // console.log(sessionBlocks);
 
-      console.log('BEFORE');
-      console.log(session.blocks);
+      // console.log('BEFORE');
+      // console.log(session.blocks);
       
       // validate form data
       errors = [];
-      errors.push({msg: 'This is a debug error'});
+      // errors.push({msg: 'This is a debug error'});
 
       // update session start from query with data from form
       session.start = new Date(startDateTimeUTC);
@@ -190,8 +189,9 @@ exports.edit_post = function(req, res, next){
 
       session.blocks = newSessionBlocks;
 
-      console.log('OUT');
-      console.log(session.blocks);
+      // console.log('OUT');
+      // console.log(session);
+      // console.log(session.blocks);
 
 
       if (errors.length){
@@ -200,6 +200,39 @@ exports.edit_post = function(req, res, next){
         sessionFormViewModel.populateFromDBModel(session);
 
         res.render('sessions/edit', {navData: navData.get(res), session: sessionFormViewModel, errors: errors});
+      }
+      else{
+        async.parallel(
+          [
+            // function(callback){
+            //   session.save(function(err){
+            //     callback(err);
+            //   });
+            // },
+            function(callback){
+              var i = 0;
+              async.whilst(
+                function(){ return i < session.blocks.length; },
+                function(callback){
+                  opBlock = session.blocks[i];
+                  opBlock.activity = new mongoose.Types.ObjectId(opBlock.activity._id);
+                  opBlock.session = new mongoose.Types.ObjectId(opBlock.session);
+                  opBlock.save(function(err){
+                    i++;
+                    callback(err);
+                  });
+                },
+                function(err){
+                  callback(err);
+                }
+              );
+            },
+          ],
+          function(err){
+            if (err) return next(err);
+            res.redirect(session.urlDetial);
+          }
+        );
       }
   });
 };
