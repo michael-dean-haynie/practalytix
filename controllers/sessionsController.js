@@ -144,6 +144,9 @@ exports.edit_post = function(req, res, next){
       // console.log(startDateTimeUTC);
       console.log('IN');
       console.log(sessionBlocks);
+
+      console.log('BEFORE');
+      console.log(session.blocks);
       
       // validate form data
       errors = [];
@@ -163,10 +166,10 @@ exports.edit_post = function(req, res, next){
 
         var blockStart = moment(session.start).utc().add(minPastStart, 'minutes').toDate();
         var blockEnd = moment(session.start).utc().add(minPastStart, 'minutes').add(inputBlock.durationInMin, 'minutes').toDate();
-        var blockActivity = new mongoose.Types.ObjectId(inputBlock.activity);
+        var blockActivity = activities.filter(x => x._id.toString() == inputBlock.activity)[0];
         var dbBlock = null;
 
-        if(inputBlock.dbModel){
+        if(inputBlock.dbModel && session.blocks.map(x => x._id.toString()).includes(inputBlock.dbModel._id.toString())){ // if its got a backing persisted model
           dbBlock = session.blocks.filter(x => x._id.toString() == inputBlock.dbModel._id)[0];
           dbBlock.start = blockStart;
           dbBlock.end = blockEnd;
