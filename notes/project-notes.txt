@@ -120,8 +120,10 @@ SCHEMA
 
 
 pu@
-- getting casting error when trying to persist changes. 
-- Also need to make sure deleted blocks are being removed from persistance
+- change all the durations to be in nearest minute length (no decimal hours... eugh)
+- create session
+- delete session
+- THEN THE FUN BEGINS
 
 
 

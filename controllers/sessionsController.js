@@ -20,6 +20,9 @@ exports.index_get = function(req, res, next){
     .populate('user')
     .populate({
       path: 'blocks',
+      options: {
+        sort: {'start': 'asc'},
+      },
       populate: {
         path: 'activity',
       } 
@@ -41,12 +44,16 @@ exports.details_get = function(req, res, next){
     .populate('user')
     .populate({
       path: 'blocks',
+      options: {
+        sort: {'start': 'asc'},
+      },
       populate: {
         path: 'activity',
       } 
     })
     .exec(function(err, session){
       if (err) {console.log(err); return next(err)};
+      console.log(session.blocks);
       res.render('sessions/details', {navData: navData.get(res), session: session});
     });
 };
@@ -85,6 +92,9 @@ exports.edit_get = function(req, res, next){
           .populate('user')
           .populate({
             path: 'blocks',
+            options: {
+              sort: {'start': 'asc'},
+            },
             populate: {
               path: 'activity',
             },
@@ -116,6 +126,9 @@ exports.edit_post = function(req, res, next){
           .populate('user')
           .populate({
             path: 'blocks',
+            options: {
+              sort: {'start': 'asc'},
+            },
             populate: {
               path: 'activity',
             },
@@ -137,31 +150,20 @@ exports.edit_post = function(req, res, next){
       moment.tz.setDefault();
 
       var sessionBlocks = JSON.parse(req.body.sessionBlocksHiddenData);
-
-      // console.log(session.start);
-      // console.log(startDateTime);
-      // console.log(startDateTimeUTC);
-      // console.log('IN');
-      // console.log(sessionBlocks);
-
-      // console.log('BEFORE');
-      // console.log(session.blocks);
+      var newSessionBlocks = [];
       
-      // validate form data
       errors = [];
       // errors.push({msg: 'This is a debug error'});
 
       // update session start from query with data from form
       session.start = new Date(startDateTimeUTC);
-
-      // remove blocks from the queried session that aren't returned in the form
-      // session.blocks = session.blocks.filter(x => sessionBlocks.map(y => y.dbModel ? y.dbModel._id : null).includes(x._id.toString()));
-      var newSessionBlocks = [];
+      var sessionLength = 0;
 
       // Update block times based off session start and blocks order.
       var minPastStart = 0;
       for(var i = 0; i < sessionBlocks.length; i++){
         var inputBlock = sessionBlocks[i];
+        sessionLength = sessionLength + inputBlock.durationInMin;
 
         var blockStart = moment(session.start).utc().add(minPastStart, 'minutes').toDate();
         var blockEnd = moment(session.start).utc().add(minPastStart, 'minutes').add(inputBlock.durationInMin, 'minutes').toDate();
@@ -187,12 +189,10 @@ exports.edit_post = function(req, res, next){
         minPastStart = minPastStart + inputBlock.durationInMin;
       }
 
+
+      var blocksToDelete = session.blocks.map(x => x._id.toString()).filter(x => !newSessionBlocks.map(y => y._id.toString()).includes(x));
       session.blocks = newSessionBlocks;
-
-      // console.log('OUT');
-      // console.log(session);
-      // console.log(session.blocks);
-
+      session.end = moment(session.start).utc().add(sessionLength, 'minutes');
 
       if (errors.length){
         var sessionFormViewModel = new SessionFormViewModel();
@@ -204,16 +204,18 @@ exports.edit_post = function(req, res, next){
       else{
         async.parallel(
           [
-            // function(callback){
-            //   session.save(function(err){
-            //     callback(err);
-            //   });
-            // },
+            // saving session changes
+            function(callback){
+              session.save(function(err){
+                callback(err);
+              });
+            },
+            // updating / creating blocks
             function(callback){
               var i = 0;
               async.whilst(
                 function(){ return i < session.blocks.length; },
-                function(callback){
+                function(callback){                  
                   opBlock = session.blocks[i];
                   opBlock.activity = new mongoose.Types.ObjectId(opBlock.activity._id);
                   opBlock.session = new mongoose.Types.ObjectId(opBlock.session);
@@ -227,10 +229,16 @@ exports.edit_post = function(req, res, next){
                 }
               );
             },
+            // deleting blocks not returned from form
+            function(callback){
+              Block.remove({_id: {$in: blocksToDelete}}, function(err, nRemoved){
+                callback(err);
+              });
+            }
           ],
           function(err){
             if (err) return next(err);
-            res.redirect(session.urlDetial);
+            res.redirect(session.urlDetails);
           }
         );
       }
