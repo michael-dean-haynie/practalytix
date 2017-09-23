@@ -18,7 +18,7 @@ block content
           td
             span= session.timeDetails.startDateFormatted
             br
-            span !{session.timeDetails.timeSpan} (!{session.timeDetails.duration})
+            span !{session.timeDetails.timeSpan} (!{session.timeDetails.durationInMin} min)
           td
             each val, index in session.activityList
               if index === session.activityList.length - 1

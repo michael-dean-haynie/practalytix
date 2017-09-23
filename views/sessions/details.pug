@@ -5,13 +5,14 @@ block content
   
   ul
     li: a(href=session.urlEdit) Edit Session
+    li: a(href=session.urlDelete) Delete Session
 
   dl
     dt Date
     dd= session.timeDetails.startDateFormatted
 
     dt Time
-    dd !{session.timeDetails.timeSpan} (!{session.timeDetails.duration})
+    dd !{session.timeDetails.timeSpan} (!{session.timeDetails.durationInMin} min)
 
   h3 Activities
   table.table.table-bordered
@@ -24,6 +25,6 @@ block content
       each block in session.blocks
         tr
           td
-            span !{block.timeSpan(session.user.timezone)} (!{block.timeDetails.duration})
+            span !{block.timeSpan(session.user.timezone)} (!{block.timeDetails.durationInMin} min)
           td
             span= block.activity.name

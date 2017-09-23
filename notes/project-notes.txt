@@ -127,8 +127,9 @@ pu@
 
 
 
-
 TODO:
+- make sure bad urls get 404's like if session id is bad
+- also make sure authed use has permission to view page
 - refactor middleware to use the determine auth middleware
 - dash needs to be renamed? More of a landing page for people to tell them what the app is about before we demand authentication
 - Install FF for testing (particularly the date/time inputs)

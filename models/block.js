@@ -18,7 +18,6 @@ blockSchema.methods.timeSpan = function(timezone){
 
 blockSchema.virtual('timeDetails').get(function(){
   return {
-    duration: moment.duration(moment(this.end).diff(moment(this.start))).humanize(),
     durationInMin: moment.duration(moment(this.end).diff(moment(this.start))).asMinutes(),
   };
 });

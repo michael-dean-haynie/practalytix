@@ -9,12 +9,18 @@ exports.model = function SessionFormViewModel(){
   this.dbModel = null;
 
   this.populateFromDBModel = function(model){
-    this.startDateTime = moment(model.start).tz(model.user.timezone).format('YYYY-MM-DD[T]HH:mm');
-    this.blocks = model.blocks.map(function(x){
-      var blockFormViewModel = new BlockFormViewModel();
-      blockFormViewModel.populateFromDBModel(x);
-      return blockFormViewModel;
-    });
+    var start = model.start ? model.start : new Date();
+    console.log(start);
+    this.startDateTime = moment(start).tz(model.user.timezone).format('YYYY-MM-DD[T]HH:mm');
+    console.log(this.startDateTime);
+
+    if (model.blocks){
+      this.blocks = model.blocks.map(function(x){
+        var blockFormViewModel = new BlockFormViewModel();
+        blockFormViewModel.populateFromDBModel(x);
+        return blockFormViewModel;
+      });
+    }
     this.dbModel = model;
   }
 

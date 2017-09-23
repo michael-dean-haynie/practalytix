@@ -33,7 +33,7 @@ $(function($){ // on document ready
       <div id='ses-bk-"+bi+"' class='ses-bk' data-ses-bk-no='"+bi+"'>\
         <label for='ses-bk-act-"+bi+"'>Activity</label>\
         <select id='ses-bk-act-"+bi+"'>\
-          <option label='Select Activity' value='none'"+(block.activity === "none" ? " selected='true'" : '')+"></option>\
+          <!-- <option label='Select Activity' value='none'"+(block.activity === "none" ? " selected='true'" : '')+"></option> -->\
       ";
 
       for(var ai = 0; ai < activityData.length; ai++){ // ai: activityData index
@@ -87,13 +87,15 @@ $(function($){ // on document ready
   }
 
   function addBlock(){
-    // read data from hidden input
+    // read data from hidden inputs
     var blocksData = JSON.parse(blocksDataInput.val());
+    var activityData = JSON.parse(activityDataInput.val());
 
     // add empty block
     blocksData.push({
       durationInMin: 15,
-      activity: 'none',
+      // activity: 'none',
+      activity: activityData[0]._id,
     });
 
     // update the hidden input

@@ -53,7 +53,6 @@ exports.details_get = function(req, res, next){
     })
     .exec(function(err, session){
       if (err) {console.log(err); return next(err)};
-      console.log(session.blocks);
       res.render('sessions/details', {navData: navData.get(res), session: session});
     });
 };
@@ -66,14 +65,104 @@ exports.details_get = function(req, res, next){
 exports.create_get = function(req, res, next){
   Activity.find(function(err, activities){
     if (err) return next(err);
+
     // create empty viewSession with some defaults
     var sessionFormViewModel = new SessionFormViewModel();
-    sessionFormViewModel.populateFromDBModel(new Session());
+    sessionFormViewModel.populateFromDBModel(new Session({user: res.locals.authed_user}));
     sessionFormViewModel.populateActivityOptions(activities);
 
     res.render('sessions/create', {navData: navData.get(res), session: sessionFormViewModel});
   });
 };
+
+exports.create_post = function(req, res, next){
+  Activity.find(function(err, activities){
+    if (err) return next(err);
+    errors = [];
+    // errors.push({msg: 'This is a debug error'});
+
+    var session = new Session({user: res.locals.authed_user});
+
+    // Set as user's timezone and convert from there to UTC so the sessionFormViewModel can convert back
+    var startDateTime = req.body.startDateTime;
+    moment.tz.setDefault(res.locals.authed_user.timezone);
+    var startDateTimeUTC = moment(startDateTime).utc().format('YYYY-MM-DD[T]HH:mm');
+    moment.tz.setDefault();
+    session.start = new Date(startDateTimeUTC);
+
+    // Figure out blocks
+    var sessionBlocks = JSON.parse(req.body.sessionBlocksHiddenData);
+    var newSessionBlocks = [];
+    var sessionLength = 0;
+    var minPastStart = 0;
+
+    for(var i = 0; i < sessionBlocks.length; i++){
+      var inputBlock = sessionBlocks[i];
+      sessionLength = sessionLength + inputBlock.durationInMin;
+
+      var blockStart = moment(session.start).utc().add(minPastStart, 'minutes').toDate();
+      var blockEnd = moment(session.start).utc().add(minPastStart, 'minutes').add(inputBlock.durationInMin, 'minutes').toDate();
+      var blockActivity = activities.filter(x => x._id.toString() == inputBlock.activity)[0];
+
+      dbBlock = new Block({
+        start: blockStart,
+        end: blockEnd,
+        session: session._id,
+        activity: blockActivity,
+      });
+
+
+      newSessionBlocks.push(dbBlock);
+      minPastStart = minPastStart + inputBlock.durationInMin;
+    }
+
+    session.blocks = newSessionBlocks;
+    session.end = moment(session.start).utc().add(sessionLength, 'minutes');
+
+    if (errors.length){
+      var sessionFormViewModel = new SessionFormViewModel();
+      sessionFormViewModel.populateActivityOptions(activities);
+      sessionFormViewModel.populateFromDBModel(session);
+
+      res.render('sessions/create', {navData: navData.get(res), session: sessionFormViewModel, errors: errors});
+    }
+    else{
+      async.parallel(
+        [
+          // saving session changes
+          function(callback){
+            session.save(function(err){
+              callback(err);
+            });
+          },
+          // updating / creating blocks
+          function(callback){
+            var i = 0;
+            async.whilst(
+              function(){ return i < session.blocks.length; },
+              function(callback){                  
+                opBlock = session.blocks[i];
+                opBlock.activity = new mongoose.Types.ObjectId(opBlock.activity._id);
+                opBlock.session = new mongoose.Types.ObjectId(opBlock.session);
+                opBlock.save(function(err){
+                  i++;
+                  callback(err);
+                });
+              },
+              function(err){
+                callback(err);
+              }
+            );
+          },
+        ],
+        function(err){
+          if (err) return next(err);
+          res.redirect(session.urlDetails);
+        }
+      );
+    }
+  });
+}
 
 /*
 |-------------------
@@ -245,3 +334,29 @@ exports.edit_post = function(req, res, next){
   });
 };
 
+/*
+|-------------------
+| delete
+|-------------------
+*/
+exports.delete_get = function(req, res, next){
+  Session.findById(req.params.sessionId, function(err, session){
+    if (err) { return next(err); }
+    if (!session) { return next(new Error("Could not find session.")); }
+    if (session.user.toString() != res.locals.authed_user._id.toString()) { return next(new Error('Session does not belong to authed user.')); } 
+    res.render('sessions/delete', {navData: navData.get(res), session: session});
+  });
+};
+
+exports.delete_post = function(req, res, next){
+  Session.findById(req.params.sessionId, function(err, session){
+    if (err) { return next(err); }
+    if (!session) { return next(new Error("Could not find session.")); }
+    if (session.user.toString() != res.locals.authed_user._id.toString()) { return next(new Error('Session does not belong to authed user.')); } 
+    
+    Session.remove({_id: session._id}, function(err){
+      if (err) { return next(err); }
+      res.redirect('/sessions');
+    });
+  });
+};

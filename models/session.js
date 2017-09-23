@@ -21,6 +21,7 @@ sessionSchema.virtual('blocks', {
 
 sessionSchema.virtual('urlDetails').get(function(){ return '/sessions/' + this._id; });
 sessionSchema.virtual('urlEdit').get(function(){ return '/sessions/edit/' + this._id });
+sessionSchema.virtual('urlDelete').get(function(){ return '/sessions/delete/' + this._id });
 
 sessionSchema.virtual('activityList').get(function(){
   return this.blocks.map(x => x.activity.name)
@@ -38,7 +39,7 @@ sessionSchema.virtual('timeDetails').get(function(){
   return {
     startDateFormatted: moment(this.start).tz('utc').format('dddd, MMMM Do YYYY'),
     timeSpan: moment(this.start).tz(this.user.timezone).format('h:mm a') + ' - ' + moment(this.end).tz(this.user.timezone).format('h:mm a'),
-    duration: moment.duration(moment(this.end).diff(moment(this.start))).humanize(),
+    durationInMin: moment.duration(moment(this.end).diff(moment(this.start))).asMinutes(),
   };
 });
 
