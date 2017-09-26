@@ -120,8 +120,22 @@ SCHEMA
 
 
 pu@
+- what would it take to make this subject agnostic? (don't sweat this!)
+  - session types (practicing starcraft vs practicing piano / trumpet / music in general)
+  - session blocks map to specific session types
+  - both have to be database driven (customizable not just enumed.)
+    - this causes problems like what if you delete a block type? Does that delete all those blocks? Just deactivate it? 2 blocks that are labeled similarly may confuse things especially if they can get activated/deactivated.
 
 - THEN THE FUN BEGINS
+  - ws
+    - include js in view that initiates conversation
+    - handle request in webSocket route and webSocket Controller
+      - Just hello world stuff
+    - figure out authentications measures
+    - lay out business rules for live session recording
+      - people leave session it get's paused
+      - can't have 2 live sessions, must close first one before you can start another one.
+      - 
 
 
 
@@ -133,5 +147,6 @@ TODO:
 - Install FF for testing (particularly the date/time inputs)
 - edit / delete user
 - forgot my password
+- ?.csv tool for spreadsheets. ex date session activity
 
 United

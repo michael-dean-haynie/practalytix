@@ -20,8 +20,10 @@ var User = require('./models/user');
 var rootRoutes = require('./routes/root');
 var authRoutes = require('./routes/auth');
 var sessionRoutes = require('./routes/session');
+// var webSocketRoutes = require('./routes/web-socket');
 
 var app = express();
+var expressWS = require('express-ws')(app);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -61,6 +63,16 @@ app.use(middleware.determineAuth);
 app.use('/', rootRoutes);
 app.use('/auth', middleware.noAuth, authRoutes);
 app.use('/sessions', middleware.authed, sessionRoutes);
+// app.use('/web-socket');
+// app.ws('/web-socket');
+app.ws('/web-socket/live-session', function(ws, req){
+  console.log('And THIS is here.');
+  ws.on('message', function(msg){
+    console.log('This is here');
+    console.log(msg);
+    ws.send(msg);
+  });
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

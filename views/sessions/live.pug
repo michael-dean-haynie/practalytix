@@ -3,3 +3,10 @@ extends ../layout
 block content
   h2 LIVE SESSION
   p This is the /sessions/live page
+
+block scripts
+  script.
+    var wsPath = 'ws://'+window.location.hostname+':'+window.location.port+'/web-socket/live-session';
+    console.log(wsPath);
+    var ws = new WebSocket(wsPath, 'echo-protocol');
+    console.log(ws);
