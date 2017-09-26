@@ -360,3 +360,12 @@ exports.delete_post = function(req, res, next){
     });
   });
 };
+
+/*
+|-------------------
+| live
+|-------------------
+*/
+exports.live_get = function(req, res, next){
+  res.render('sessions/live', {navData: navData.get(res)});
+};

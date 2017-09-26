@@ -120,9 +120,7 @@ SCHEMA
 
 
 pu@
-- change all the durations to be in nearest minute length (no decimal hours... eugh)
-- create session
-- delete session
+
 - THEN THE FUN BEGINS
 
 
@@ -133,5 +131,7 @@ TODO:
 - refactor middleware to use the determine auth middleware
 - dash needs to be renamed? More of a landing page for people to tell them what the app is about before we demand authentication
 - Install FF for testing (particularly the date/time inputs)
+- edit / delete user
+- forgot my password
 
 United
