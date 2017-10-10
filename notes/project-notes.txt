@@ -119,7 +119,6 @@ SCHEMA
 
 
 
-pu@
 - what would it take to make this subject agnostic? (don't sweat this!)
   - session types (practicing starcraft vs practicing piano / trumpet / music in general)
   - session blocks map to specific session types
@@ -148,5 +147,3 @@ TODO:
 - edit / delete user
 - forgot my password
 - ?.csv tool for spreadsheets. ex date session activity
-
-United

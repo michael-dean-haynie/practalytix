@@ -6,7 +6,7 @@ block content
 
 block scripts
   script.
-    var wsPath = 'ws://'+window.location.hostname+':'+window.location.port+'/web-socket/live-session';
+    var wsPath = 'ws://'+window.location.hostname+':'+window.location.port/*+'/web-socket/live-session'*/;
     console.log(wsPath);
     var ws = new WebSocket(wsPath, 'echo-protocol');
     console.log(ws);
