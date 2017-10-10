@@ -4,9 +4,20 @@ block content
   h2 LIVE SESSION
   p This is the /sessions/live page
 
+  form(action='sessions/live', method='POST')
+
+    div.form-group.button-list
+      button.btn.btn-primary(type='submit') Save
+      a.btn.btn-default(href='/sessions') Cancel
+
+
+    div.invisible
+      input#session-blocks-hidden-data(type='hidden' name='sessionBlocksHiddenData' value=session ? session.getBlocksJSON() : '')
+
+      input#activity-options-data(type='hidden' value=session ? session.getActivityOptionsJSON() : '')
+
+      input#session-start-data(type='hidden' value=session.startDateTime)
+      input#input-start-date-time.form-control(type='datetime-local', name='startDateTime' required=true placeholder='' value='')
+
 block scripts
-  script.
-    var wsPath = 'ws://'+window.location.hostname+':'+window.location.port/*+'/web-socket/live-session'*/;
-    console.log(wsPath);
-    var ws = new WebSocket(wsPath, 'echo-protocol');
-    console.log(ws);
+  script(src='/scripts/handle-input-timezones.js')

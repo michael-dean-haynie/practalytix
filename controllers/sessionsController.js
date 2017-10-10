@@ -94,14 +94,14 @@ exports.create_post = function(req, res, next){
     var sessionBlocks = JSON.parse(req.body.sessionBlocksHiddenData);
     var newSessionBlocks = [];
     var sessionLength = 0;
-    var minPastStart = 0;
+    var secPastStart = 0;
 
     for(var i = 0; i < sessionBlocks.length; i++){
       var inputBlock = sessionBlocks[i];
-      sessionLength = sessionLength + inputBlock.durationInMin;
+      sessionLength = sessionLength + inputBlock.durationInSec;
 
-      var blockStart = moment(session.start).utc().add(minPastStart, 'minutes').toDate();
-      var blockEnd = moment(session.start).utc().add(minPastStart, 'minutes').add(inputBlock.durationInMin, 'minutes').toDate();
+      var blockStart = moment(session.start).utc().add(secPastStart, 'seconds').toDate();
+      var blockEnd = moment(session.start).utc().add(secPastStart, 'seconds').add(inputBlock.durationInSec, 'seconds').toDate();
       var blockActivity = activities.filter(x => x._id.toString() == inputBlock.activity)[0];
 
       dbBlock = new Block({
@@ -113,11 +113,11 @@ exports.create_post = function(req, res, next){
 
 
       newSessionBlocks.push(dbBlock);
-      minPastStart = minPastStart + inputBlock.durationInMin;
+      secPastStart = secPastStart + inputBlock.durationInSec;
     }
 
     session.blocks = newSessionBlocks;
-    session.end = moment(session.start).utc().add(sessionLength, 'minutes');
+    session.end = moment(session.start).utc().add(sessionLength, 'seconds');
 
     if (errors.length){
       var sessionFormViewModel = new SessionFormViewModel();
@@ -249,13 +249,13 @@ exports.edit_post = function(req, res, next){
       var sessionLength = 0;
 
       // Update block times based off session start and blocks order.
-      var minPastStart = 0;
+      var secPastStart = 0;
       for(var i = 0; i < sessionBlocks.length; i++){
         var inputBlock = sessionBlocks[i];
-        sessionLength = sessionLength + inputBlock.durationInMin;
+        sessionLength = sessionLength + inputBlock.durationInSec;
 
-        var blockStart = moment(session.start).utc().add(minPastStart, 'minutes').toDate();
-        var blockEnd = moment(session.start).utc().add(minPastStart, 'minutes').add(inputBlock.durationInMin, 'minutes').toDate();
+        var blockStart = moment(session.start).utc().add(secPastStart, 'seconds').toDate();
+        var blockEnd = moment(session.start).utc().add(secPastStart, 'seconds').add(inputBlock.durationInSec, 'seconds').toDate();
         var blockActivity = activities.filter(x => x._id.toString() == inputBlock.activity)[0];
         var dbBlock = null;
 
@@ -275,13 +275,13 @@ exports.edit_post = function(req, res, next){
         }
 
         newSessionBlocks.push(dbBlock);
-        minPastStart = minPastStart + inputBlock.durationInMin;
+        secPastStart = secPastStart + inputBlock.durationInSec;
       }
 
 
       var blocksToDelete = session.blocks.map(x => x._id.toString()).filter(x => !newSessionBlocks.map(y => y._id.toString()).includes(x));
       session.blocks = newSessionBlocks;
-      session.end = moment(session.start).utc().add(sessionLength, 'minutes');
+      session.end = moment(session.start).utc().add(sessionLength, 'seconds');
 
       if (errors.length){
         var sessionFormViewModel = new SessionFormViewModel();
@@ -367,5 +367,14 @@ exports.delete_post = function(req, res, next){
 |-------------------
 */
 exports.live_get = function(req, res, next){
-  res.render('sessions/live', {navData: navData.get(res)});
+  Activity.find(function(err, activities){
+    if (err) return next(err);
+
+    // create empty viewSession with some defaults
+    var sessionFormViewModel = new SessionFormViewModel();
+    sessionFormViewModel.populateFromDBModel(new Session({user: res.locals.authed_user}));
+    sessionFormViewModel.populateActivityOptions(activities);
+
+    res.render('sessions/live', {navData: navData.get(res), session: sessionFormViewModel});
+  });
 };

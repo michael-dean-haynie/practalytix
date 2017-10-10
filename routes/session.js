@@ -18,6 +18,7 @@ router.get('/delete/:sessionId', sessionsController.delete_get);
 router.post('/delete/:sessionId', sessionsController.delete_post);
 
 router.get('/live', sessionsController.live_get);
+router.post('/live', sessionsController.create_post);
 
 router.get('/', sessionsController.index_get);
 router.get('/:sessionId', sessionsController.details_get);

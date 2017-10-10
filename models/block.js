@@ -19,14 +19,8 @@ blockSchema.methods.timeSpan = function(timezone){
 blockSchema.virtual('timeDetails').get(function(){
   return {
     durationInMin: moment.duration(moment(this.end).diff(moment(this.start))).asMinutes(),
+    durationInSec: moment.duration(moment(this.end).diff(moment(this.start))).asSeconds(),
   };
 });
-
-// // hooks
-// function populateSession(next){ this.populate('session'); next();}
-
-// blockSchema.pre('find', populateSession);
-// blockSchema.pre('findById', populateSession);
-
 
 module.exports = mongoose.model('Block', blockSchema);
