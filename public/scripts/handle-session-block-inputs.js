@@ -92,9 +92,10 @@ $(function($){ // on document ready
     var blocksData = JSON.parse(blocksDataInput.val());
     var activityData = JSON.parse(activityDataInput.val());
 
-    // add empty block
+    // add new block
     blocksData.push({
       durationInMin: 15,
+      durationInSec: 15*60,
       // activity: 'none',
       activity: activityData[0]._id,
     });

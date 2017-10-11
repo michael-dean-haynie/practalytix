@@ -7,8 +7,8 @@ block content
   form(action='sessions/live', method='POST')
 
     div.form-group.button-list
-      button.btn.btn-primary(type='submit') Save
-      a.btn.btn-default(href='/sessions') Cancel
+      //- button.btn.btn-primary(type='submit') Save
+      //- a.btn.btn-default(href='/sessions') Cancel
 
 
     div.invisible
@@ -19,5 +19,17 @@ block content
       input#session-start-data(type='hidden' value=session.startDateTime)
       input#input-start-date-time.form-control(type='datetime-local', name='startDateTime' required=true placeholder='' value='')
 
+  div
+    span#sw-hours 00
+    span &nbsp;:&nbsp;
+    span#sw-minutes 00
+    span &nbsp;:&nbsp;
+    span#sw-seconds 00
+
+  div.button-list
+    each act in session.activityOptions
+      button.btn.btn-default.activity-button(type='button' data-act-id=act._id) !{act.name}
+
 block scripts
   script(src='/scripts/handle-input-timezones.js')
+  script(src='/scripts/handle-live-session.js')

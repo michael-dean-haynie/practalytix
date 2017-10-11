@@ -10,9 +10,7 @@ exports.model = function SessionFormViewModel(){
 
   this.populateFromDBModel = function(model){
     var start = model.start ? model.start : new Date();
-    console.log(start);
     this.startDateTime = moment(start).tz(model.user.timezone).format('YYYY-MM-DD[T]HH:mm');
-    console.log(this.startDateTime);
 
     if (model.blocks){
       this.blocks = model.blocks.map(function(x){
