@@ -46,9 +46,9 @@ $(function($){ // on document ready
       mkup = mkup + "\
         </select>\
         <label>min:</label>\
-        <input type='number' min='0' id='ses-bk-min-"+bi+"' value='"+(block.durationInMin || 0)+"'></input>\
+        <input type='number' min='0' id='ses-bk-min-"+bi+"' value='"+(Math.floor(block.durationInSec / 60) || 0)+"' required></input>\
         <label>sec:</label>\
-        <input type='number' min='0' max='59' id='ses-bk-sec-"+bi+"' value='"+((block.durationInSec % 60) || 0)+"'></input>\
+        <input type='number' min='0' max='59' id='ses-bk-sec-"+bi+"' value='"+((block.durationInSec % 60) || 0)+"' required></input>\
         <button type='button' class='move-bk-up-btn' data-bk-idx='"+bi+"'>up</button>\
         <button type='button' class='move-bk-down-btn' data-bk-idx='"+bi+"'>down</button>\
         <button type='button' class='remove-bk-btn' data-bk-idx='"+bi+"'>remove</button>\
@@ -75,12 +75,11 @@ $(function($){ // on document ready
 
     var newData = [];
     $('.ses-bk').each(function(){
-      // console.log('HERE');
       var blockNo = $(this).data('ses-bk-no');
       var oldBlock = blocksData[blockNo] || {};
       oldBlock.activity = $('#ses-bk-act-'+blockNo).val();
-      oldBlock.durationInMin = parseInt($('#ses-bk-min-'+blockNo).val());
-      oldBlock.durationInSec = (oldBlock.durationInMin*60) + parseInt($('#ses-bk-sec-'+blockNo).val());
+      // oldBlock.durationInMin = parseInt($('#ses-bk-min-'+blockNo).val());
+      oldBlock.durationInSec = (parseInt($('#ses-bk-min-'+blockNo).val())*60) + parseInt($('#ses-bk-sec-'+blockNo).val());
       newData[blockNo] = oldBlock;
     });
 

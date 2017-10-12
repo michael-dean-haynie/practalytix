@@ -10,14 +10,40 @@ $(function($){ // on document ready
 
   // do some stuff
   bindActivityButtonHandlers();
+  bindStopButtonHandler();
 
-  // define some functions
+  // define some functions - bind handlers
+  function bindActivityButtonHandlers(){
+    $('.activity-button').on('click', function(){
+      // update buttons
+      $('.activity-button').removeClass('btn-primary');
+      $(this).addClass('btn-primary');
+
+      // update curAct
+      curAct = $(this).data('act-id');
+
+      // check for session start
+      if (null == lastAct){
+        startSession();
+      }
+
+      // 
+    });
+  }
+
+  function bindStopButtonHandler(){
+    $('#stop-button').on('click', stopSession);
+  }
+
+
+  // define some more functions
   function startSession(){
     intervalHandle = setInterval(tick, 1000);
   }
 
   function stopSession(){
     clearInterval(intervalHandle);
+    var theForm = $('form#live-session-form').submit();
   }
 
   function tick(){ // runs every second. Adds the just passed second to last block or new block it creates.
@@ -69,24 +95,6 @@ $(function($){ // on document ready
     $('#sw-hours').html(hourDisplay);
     $('#sw-minutes').html(minDisplay);
     $('#sw-seconds').html(secDisplay);
-  }
-
-  function bindActivityButtonHandlers(){
-    $('.activity-button').on('click', function(){
-      // update buttons
-      $('.activity-button').removeClass('btn-primary');
-      $(this).addClass('btn-primary');
-
-      // update curAct
-      curAct = $(this).data('act-id');
-
-      // check for session start
-      if (null == lastAct){
-        startSession();
-      }
-
-      // 
-    });
   }
 
 
