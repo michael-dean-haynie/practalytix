@@ -53,7 +53,7 @@ app.use(session({
 }));
 
 // dev auto signin
-app.use(middleware.devAutoSignin);
+// app.use(middleware.devAutoSignin);
 
 // determine auth status
 app.use(middleware.determineAuth);

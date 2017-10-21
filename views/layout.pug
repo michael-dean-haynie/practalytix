@@ -1,5 +1,8 @@
 doctype html
 html
+  block navStatus
+    //- to be overwritten
+
   head
     title= title
 
@@ -9,11 +12,30 @@ html
 
     //- scripts
     script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js')
+
   body
-    h1 Practalytix
-    ul
-      each item in navData
-        li: a(href=item.target) !{item.label}
+    nav.navbar.navbar-default(role='navigation')
+      div.navbar-collapse
+        ul.nav.navbar-nav
+          li
+            a.logo-text(href='/') Practalytix
+          if(navData.management)
+            li(class=navData.management.active ? 'active' : '')
+              a(href=navData.management.target) !{navData.management.label}
+          if(navData.analytics)
+            li(class=navData.analytics.active ? 'active' : '')
+              a(href=navData.analytics.target) !{navData.analytics.label}
+
+        ul.nav.navbar-nav.navbar-right
+          li(class=navData.authStatus.active ? 'active' : '')
+            a(href=navData.authStatus.target) !{navData.authStatus.label}
+          
+
+
+    //- h1 Practalytix
+    //- ul
+    //-   each item in navData
+    //-     li: a(href=item.target) !{item.label}
 
     div#main.container-fluid
       block content

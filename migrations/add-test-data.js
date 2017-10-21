@@ -41,7 +41,7 @@ function userMigration(callback){
         ['David', 'Guetta', 'US/Central', 'david@guetta.com', 'davidguetta'],
         ['Shawn', 'Mendes', 'US/Eastern', 'shawn@mendes.com', 'shawnmendes'],
         ['Bruno', 'Mars', 'Japan', 'bruno@mars.com', 'brunomars'],
-        ['Justin', 'Bieber', 'UTC', 'justin@bieber', 'justinbieber'],
+        ['Justin', 'Bieber', 'UTC', 'justin@bieber.com', 'justinbieber'],
         ['Dean', 'Haynie', 'America/Phoenix', 'michael.dean.haynie@gmail.com', 'deanhaynie'],
       ];
 

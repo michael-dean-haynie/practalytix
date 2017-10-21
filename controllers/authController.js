@@ -42,7 +42,7 @@ exports.signin_post = function(req, res, next){
       return res.render('auth/signin', {navData: navData.get(res), user: viewUser, errors: errors});
     } else{
       req.session.user_id = user._id;
-      res.redirect('/');
+      res.redirect('/sessions');
     }
   });
 };
@@ -106,7 +106,7 @@ exports.signup_post = function(req, res, next){
       userToSave.save(function(err){
         if (err) return next(err);
         req.session.user_id = userToSave._id;
-        res.redirect('/');
+        res.redirect('/sessions');
       });
     }
   });

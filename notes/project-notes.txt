@@ -126,9 +126,8 @@ SCHEMA
     - this causes problems like what if you delete a block type? Does that delete all those blocks? Just deactivate it? 2 blocks that are labeled similarly may confuse things especially if they can get activated/deactivated.
 
 - THEN THE FUN BEGINS
-  - submits to same controller as the create session page?
-  - plan out logic of live page js
-    - every second it updates the hidden input and then all the visible charts and stuff from the hidden input.
+  - Dash becomes an open about page
+  - pu@ building new nav
 
 
 TODO:
