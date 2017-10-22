@@ -92,12 +92,34 @@ $(function($){ // on document ready
     var activityData = JSON.parse(activityDataInput.val());
 
     // console
-    console.log(blocksDataInput.val());
+    // console.log(blocksDataInput.val());
 
     // stop watch
     var pauseId = activityData.filter(x => x.name == 'Paused')[0]._id;
     var duration = blocksData.map(b => b.activity == pauseId ? 0 : b.durationInSec).reduce((a,b) => a + b); //sum not including paused time
-    
+    var displayVals = formatAsStopWatch(duration);
+
+    $('#sw-hours').html(displayVals.h);
+    $('#sw-minutes').html(displayVals.m);
+    $('#sw-seconds').html(displayVals.s);
+
+    // Activities 
+    var theMarkup = '';
+    for(var i = 0; i < blocksData.length; i++){
+      var num = i+1;
+      var name = activityData.filter(x => x._id == blocksData[i].activity)[0].name;
+      var dur = formatAsStopWatch(blocksData[i].durationInSec);
+      var durForm = dur.h+':'+dur.m+':'+dur.s;
+      var theClass = (i+1) == blocksData.length ? 'success' : name == 'Paused' ? 'active' : '';
+
+      theMarkup = theMarkup + '<tr class="'+theClass+'"><td>'+num+'</td><td>'+name+'</td><td>'+durForm+'</td></tr>';
+    }
+
+    $('#activities-log').html(theMarkup);
+
+  }
+
+  function formatAsStopWatch(duration){
     var hours = Math.floor(duration / 60 / 60);
     var mins = Math.floor(duration / 60) - (hours * 60);
     var secs = duration % 60;
@@ -106,9 +128,7 @@ $(function($){ // on document ready
     var minDisplay = '00'.slice(mins.toString().length) + mins.toString();
     var secDisplay = '00'.slice(secs.toString().length) + secs.toString();
 
-    $('#sw-hours').html(hourDisplay);
-    $('#sw-minutes').html(minDisplay);
-    $('#sw-seconds').html(secDisplay);
+    return {h: hourDisplay, m: minDisplay, s: secDisplay};
   }
 
 
