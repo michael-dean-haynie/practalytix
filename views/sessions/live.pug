@@ -1,37 +1,64 @@
 extends ./sessions-layout
 
 block content
-  h2 LIVE SESSION
-  p This is the /sessions/live page
+  div.row
+    div.col-xs-6.text-left
+      h2 
+        span Live&nbsp;Session&nbsp;
+        span#status-text [PAUSED]
+    div.col-xs-6.text-right
+      h2
+        span#sw-hours 00
+        span &nbsp;:&nbsp;
+        span#sw-minutes 00
+        span &nbsp;:&nbsp;
+        span#sw-seconds 00
 
-  form(action='/sessions/live', method='POST' id='live-session-form')
+  div.row
+    form(action='/sessions/live', method='POST' id='live-session-form')
 
-    div.form-group.button-list
-      //- button.btn.btn-primary(type='submit') Save
-      //- a.btn.btn-default(href='/sessions') Cancel
+      div.invisible
+        input#session-blocks-hidden-data(type='hidden' name='sessionBlocksHiddenData' value=session ? session.getBlocksJSON() : '')
 
+        input#activity-options-data(type='hidden' value=session ? session.getActivityOptionsJSON() : '')
 
-    div.invisible
-      input#session-blocks-hidden-data(type='hidden' name='sessionBlocksHiddenData' value=session ? session.getBlocksJSON() : '')
+        input#session-start-data(type='hidden' value=session.startDateTime)
+        input#input-start-date-time.form-control(type='datetime-local', name='startDateTime' required=true placeholder='' value='')
 
-      input#activity-options-data(type='hidden' value=session ? session.getActivityOptionsJSON() : '')
+  div.row
+    div.col-xs-12
+      div.panel.panel-primary
+        div.panel-heading.text-center
+          span#help-text Start recording by selecting an activity
+        div.panel-body.row
+          div.col-xs-12.button-list.vert-spacer-big
+            each act in session.activityOptions
+              if act.name == 'Paused'
+                //- do not display 'Paused' button
+              else
+                button.btn.btn-default.btn-lg.activity-button(data-act-id=act._id) !{act.name}
+          div.col-xs-6
+            button#pause-button.btn.btn-info.btn-block.btn-lg.activity-button.hidden.add-bottom-space Pause Session
+          div.col-xs-6
+            button#stop-button.btn.btn-danger.btn-block.btn-lg.hidden End Session
 
-      input#session-start-data(type='hidden' value=session.startDateTime)
-      input#input-start-date-time.form-control(type='datetime-local', name='startDateTime' required=true placeholder='' value='')
-
-  div
-    span#sw-hours 00
-    span &nbsp;:&nbsp;
-    span#sw-minutes 00
-    span &nbsp;:&nbsp;
-    span#sw-seconds 00
-
-  div.button-list
-    each act in session.activityOptions
-      button.btn.btn-default.activity-button(data-act-id=act._id) !{act.name}
-
-  div
-    button#stop-button.btn.btn-default Stop Session
+    div.col-xs-12
+      div.panel.panel-default
+        div.panel-heading.text-center Activites
+        table.table
+          tr
+            th #
+            th Activity
+            th Duration
+          tr
+            td 1
+            td A
+            td B
+          tr
+            td 2
+            td E
+            td F
+      
 
 block scripts
   script(src='/scripts/handle-input-timezones.js')

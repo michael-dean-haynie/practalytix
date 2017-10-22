@@ -11,8 +11,16 @@ h1{
 }
 
 .logo-text{
-  font-weight:bolder;
+  font-weight:bold;
   font-size:1.5em;
+}
+
+.add-bottom-space{
+  margin-bottom:5px;
+}
+
+.vert-spacer-big{
+  margin-bottom:20px;
 }
 
 /* bootstraap tweeks */

@@ -3,8 +3,9 @@ extends ./sessions-layout
 block content
   h2 Sessions
 
-  ul
-    li: a(href='/sessions/create') Add a new session
+  div.button-list
+    a.btn.btn-success(href='/sessions/live') Start live session
+    a.btn.btn-primary(href='/sessions/create') Add new session manually
 
   table.table.table-bordered
     thead

@@ -15,6 +15,12 @@ $(function($){ // on document ready
   // define some functions - bind handlers
   function bindActivityButtonHandlers(){
     $('.activity-button').on('click', function(){
+      // read data from hidden input
+      var blocksData = JSON.parse(blocksDataInput.val());
+      var activityData = JSON.parse(activityDataInput.val());
+
+      var pauseId = activityData.filter(x => x.name == 'Paused')[0]._id;
+    
       // update buttons
       $('.activity-button').removeClass('btn-primary');
       $(this).addClass('btn-primary');
@@ -22,12 +28,20 @@ $(function($){ // on document ready
       // update curAct
       curAct = $(this).data('act-id');
 
+      // update text
+      var isPaused = $(this).data('act-id') == pauseId;
+      $('#status-text').html('['+(isPaused ? 'Paused' : 'Recording')+']');
+      $('#help-text').html(isPaused ? 'Resume recording by selecting an activity' : 'Switch activities by selecting a new one below');
+
+      // show stop button
+      $('#stop-button').removeClass('hidden');
+      $('#pause-button').removeClass('hidden').data('act-id', pauseId);
+
+
       // check for session start
       if (null == lastAct){
         startSession();
       }
-
-      // 
     });
   }
 
