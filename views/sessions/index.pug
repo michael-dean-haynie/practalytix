@@ -2,35 +2,12 @@ extends ./sessions-layout
 
 block content
   div.row
-    div.col-xs-12
+    div.col-xs-5
       h2 Session History
-
-  div.row.vert-spacer-big
-    div.col-xs-6
-      a.btn.btn-success.btn-lg.btn-block(href='/sessions/live') Start live session
-    div.col-xs-6
-      a.btn.btn-primary.btn-lg.btn-block(href='/sessions/create') Add new session manually
-
-  //- table.table.table-bordered
-  //-   thead
-  //-     tr
-  //-       td Date
-  //-       td Activities
-  //-       td Details
-  //-   tbody
-  //-     each session in sessions
-  //-       tr
-  //-         td
-  //-           span= session.timeDetails.startDateFormatted
-  //-           br
-  //-           span !{session.timeDetails.timeSpan} (!{session.timeDetails.durationInMin} min)
-  //-         td
-  //-           each val, index in session.activityList
-  //-             if index === session.activityList.length - 1
-  //-               span= val
-  //-             else
-  //-               span= val + ', ' 
-  //-         td: a(href=session.urlDetails) Session Details
+    div.col-xs-7.button-list.text-right
+      h2
+        a.btn.btn-success(href='/sessions/live') Start live session
+        a.btn.btn-primary(href='/sessions/create') Add new session manually
 
   div.row
     div.col-xs-12

@@ -1,38 +1,54 @@
 extends ./sessions-layout
 
 block content
-  h1 Edit Session
+  div.row
+    div.col-xs-5
+      h2 Edit Session
+    div.col-xs-7.button-list.text-right
+      h2
+        a.btn.btn-default(href=session.dbModel.urlDetails) Back to Details
+        //- a.btn.btn-danger(href=session.dbModel.urlDelete) Delete Session
 
-  ul
-    li: a(href=session.dbModel.urlDetails) Session Details
+  div.row
+    div.col-xs-12
+      form(action=session.dbModel.urlEdit, method="POST")
+        div.form-group
+          label.control-label(for='input-start-date-time') Starting Date
+          input#input-start-date-time.form-control(type='datetime-local', name='startDateTime' required=true placeholder='' value='')
 
-  form(action=session.dbModel.urlEdit, method="POST")
-    div.form-group
-      label.control-label(for='input-start-date-time') Date
-      input#input-start-date-time.form-control(type='datetime-local', name='startDateTime' required=true placeholder='' value='')
+        div.form-group
+          div.panel.panel-default
+            div.panel-heading.text-center Activity Log
+            table.table
+              thead
+                tr
+                  th #
+                  th Activity
+                  th Minutes
+                  th
+                  th Seconds
+                  th Actions
+              tbody#session-blocks-input-container
+            div.panel-footer
+              button#add-bk-btn.btn.btn-success(type='button') Add Block
 
-    div.form-group
-      label.control-label Blocks
-      div#session-blocks-input-container
+        div.form-group.button-list
+          button.btn.btn-primary(type='submit') Save
+          a.btn.btn-default(href=session.dbModel.urlDetails) Cancel
 
+        div.invisible
+          input#session-blocks-hidden-data(type='hidden' name='sessionBlocksHiddenData' value=session ? session.getBlocksJSON() : '')
 
-    div.form-group.button-list
-      button.btn.btn-primary(type='submit') Save
-      a.btn.btn-default(href=session.dbModel.urlDetails) Cancel
+          input#activity-options-data(type='hidden' value=session ? session.getActivityOptionsJSON() : '')
 
-    div.invisible
-      input#session-blocks-hidden-data(type='hidden' name='sessionBlocksHiddenData' value=session ? session.getBlocksJSON() : '')
+          input#session-start-data(type='hidden' value=session.startDateTime)
 
-      input#activity-options-data(type='hidden' value=session ? session.getActivityOptionsJSON() : '')
-
-      input#session-start-data(type='hidden' value=session.startDateTime)
-
-    div.form-group
-      if  errors && errors.length
-        div.alert.alert-danger
-          ul
-            each error in errors
-              li !{error.msg} 
+        div.form-group
+          if  errors && errors.length
+            div.alert.alert-danger
+              ul
+                each error in errors
+                  li !{error.msg} 
 
 block scripts
   script(src='/scripts/handle-session-block-inputs.js')

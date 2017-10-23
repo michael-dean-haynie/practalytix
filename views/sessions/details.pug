@@ -1,30 +1,50 @@
 extends ./sessions-layout
 
 block content
-  h2 Session Details
-  
-  ul
-    li: a(href=session.urlEdit) Edit Session
-    li: a(href=session.urlDelete) Delete Session
+  div.row
+    div.col-xs-5
+      h2 Session Details
+    div.col-xs-7.text-right.button-list
+      h2
+        a.btn.btn-default(href='/sessions') Back to Session History
+        a.btn.btn-info(href=session.urlEdit) Edit Session
+        a.btn.btn-danger(href=session.urlDelete) Delete Session
 
-  dl
-    dt Date
-    dd= session.timeDetails.startDateFormatted
+  //- dl
+  //-   dt Date
+  //-   dd= session.timeDetails.startDateFormatted
 
-    dt Time
-    dd !{session.timeDetails.timeSpan} (!{session.timeDetails.durationInMin} min)
+  //-   dt Time
+  //-   dd !{session.timeDetails.timeSpan} (!{session.timeDetails.durationInMin} min)
 
-  h3 Activities
-  table.table.table-bordered
-    thead
-      tr
-        td Time
-        td Activity
-        //- td Details
-    tbody
-      each block in session.blocks
-        tr
-          td
-            span !{block.timeSpan(session.user.timezone)} (!{block.timeDetails.durationInMin} min)
-          td
-            span= block.activity.name
+  div.row.vert-spacer-big
+    div.col-xs-12
+      ul.session-list
+        li
+          div.row
+            div.col-xs-6.col-md-4
+              span.session-list-date !{session.timeDetails.startDateFormatted}
+              br
+              span.session-list-time !{session.timeDetails.timeSpan}
+              span &nbsp;
+              span (!{session.timeDetails.swDur.default})
+            div.col-xs-3.col-md-6
+              each act in session.activityList
+                span.session-list-act !{act}
+
+  div.row
+    div.col-xs-12
+      div.panel.panel-default
+        div.panel-heading.text-center Activites Log
+        table.table
+          thead
+            tr
+              th #
+              th Activity
+              th Duration
+          tbody#activities-log
+            each block, index in session.blocks
+              tr
+                td !{index+1}
+                td !{block.activity.name}
+                td !{block.timeDetails.swDur.default}

@@ -21,6 +21,10 @@ h1{text-align: center;}
   margin-bottom:20px;
 }
 
+.small-input{
+  width:4em;
+}
+
 /* session list (cards) https://www.w3schools.com/w3css/w3css_lists.asp */
 ul.session-list{
   margin:0;

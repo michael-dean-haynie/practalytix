@@ -7,11 +7,11 @@ $(function($){ // on document ready
 
   // do some stuff
   updateBlockInputs();
+  $('#add-bk-btn').on('click', addBlock);
 
   // define some functions
   function bindEventHandlers(){
     $('.ses-bk input, .ses-bk select').on('change', updateBlockData);
-    $('#add-bk-btn').on('click', addBlock);
     $('.remove-bk-btn').on('click', function(){removeBlock($(this).data('bk-idx'))});
     $('.move-bk-up-btn').on('click', function(){moveBlock('up', $(this).data('bk-idx'))});
     $('.move-bk-down-btn').on('click', function(){moveBlock('down', $(this).data('bk-idx'))});
@@ -30,37 +30,44 @@ $(function($){ // on document ready
     for (var bi = 0; bi < blocksData.length; bi++){ // bi: blockData index
       var block = blocksData[bi];
       mkup = mkup + "\
-      <div id='ses-bk-"+bi+"' class='ses-bk' data-ses-bk-no='"+bi+"'>\
-        <label for='ses-bk-act-"+bi+"'>Activity</label>\
-        <select id='ses-bk-act-"+bi+"'>\
-          <!-- <option label='Select Activity' value='none'"+(block.activity === "none" ? " selected='true'" : '')+"></option> -->\
+      <tr id='ses-bk-"+bi+"' class='ses-bk' data-ses-bk-no='"+bi+"'>\
+        <td>"+(bi+1)+"</td>\
+        <td>\
+          <select id='ses-bk-act-"+bi+"'>\
+            <!-- <option label='Select Activity' value='none'"+(block.activity === "none" ? " selected='true'" : '')+"></option> -->\
       ";
 
       for(var ai = 0; ai < activityData.length; ai++){ // ai: activityData index
         var actId = activityData[ai]._id;
         var actLabel = activityData[ai].name;
         var actIsSelected = actId === block.activity;
-        mkup = mkup + "<option label='"+actLabel+"' value='"+actId+"' "+(actIsSelected ? "selected='true'" : "")+"></option>";
+        mkup = mkup + "<option value='"+actId+"' "+(actIsSelected ? "selected='true'" : "")+">"+actLabel+"</option>";
       }
 
       mkup = mkup + "\
-        </select>\
-        <label>min:</label>\
-        <input type='number' min='0' id='ses-bk-min-"+bi+"' value='"+(Math.floor(block.durationInSec / 60) || 0)+"' required></input>\
-        <label>sec:</label>\
-        <input type='number' min='0' max='59' id='ses-bk-sec-"+bi+"' value='"+((block.durationInSec % 60) || 0)+"' required></input>\
-        <button type='button' class='move-bk-up-btn' data-bk-idx='"+bi+"'>up</button>\
-        <button type='button' class='move-bk-down-btn' data-bk-idx='"+bi+"'>down</button>\
-        <button type='button' class='remove-bk-btn' data-bk-idx='"+bi+"'>remove</button>\
-      </div>\
+          </select>\
+        </td>\
+        <td>\
+          <input type='number' min='0' max='9999' id='ses-bk-min-"+bi+"' class='small-input' value='"+(Math.floor(block.durationInSec / 60) || 0)+"' required></input>\
+        </td>\
+        <td>:</td>\
+        <td>\
+          <input type='number' min='0' max='59' id='ses-bk-sec-"+bi+"' class='small-input' value='"+((block.durationInSec % 60) || 0)+"' required></input>\
+        </td>\
+        <td class='button-list'>\
+          <button type='button' class='move-bk-up-btn btn btn-sm btn-default' data-bk-idx='"+bi+"'>\
+            <span class='glyphicon glyphicon-chevron-up'></span>\
+          </button>\
+          <button type='button' class='move-bk-down-btn btn btn-sm btn-default' data-bk-idx='"+bi+"'>\
+            <span class='glyphicon glyphicon-chevron-down'></span>\
+          </button>\
+          <button type='button' class='remove-bk-btn btn btn-sm btn-warning' data-bk-idx='"+bi+"'>\
+            <span class='glyphicon glyphicon-remove'></span>\
+          </button>\
+        </td>\
+      </tr>\
       ";
     }
-
-    mkup = mkup + "\
-      <div>\
-        <button id='add-bk-btn' type='button'>Add Block</button>\
-      </div>\
-    ";
 
     // insert mkup
     container.append(mkup);

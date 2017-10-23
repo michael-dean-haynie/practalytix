@@ -17,9 +17,11 @@ blockSchema.methods.timeSpan = function(timezone){
 };
 
 blockSchema.virtual('timeDetails').get(function(){
+  var durInSec = moment.duration(moment(this.end).diff(moment(this.start))).asSeconds();
   return {
     durationInMin: moment.duration(moment(this.end).diff(moment(this.start))).asMinutes(),
-    durationInSec: moment.duration(moment(this.end).diff(moment(this.start))).asSeconds(),
+    durationInSec: durInSec,
+    swDur: helpers.formatAsStopWatch(durInSec),
   };
 });
 
