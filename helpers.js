@@ -15,3 +15,15 @@ exports.momentConfig = function(moment){
 // exports.formatDateForInput = function(date){
 //   return moment(date).utc().format('YYYY-MM-DD[T]HH:mm');
 // }
+
+exports.formatAsStopWatch = function(duration){ // duration is expected in seconds
+  var hours = Math.floor(duration / 60 / 60);
+  var mins = Math.floor(duration / 60) - (hours * 60);
+  var secs = duration % 60;
+
+  var hourDisplay = '00'.slice(hours.toString().length) + hours.toString();
+  var minDisplay = '00'.slice(mins.toString().length) + mins.toString();
+  var secDisplay = '00'.slice(secs.toString().length) + secs.toString();
+
+  return {h: hourDisplay, m: minDisplay, s: secDisplay, default: hourDisplay+':'+minDisplay+':'+secDisplay};
+}

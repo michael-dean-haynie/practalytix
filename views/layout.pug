@@ -28,7 +28,13 @@ html
 
         ul.nav.navbar-nav.navbar-right
           li(class=navData.authStatus.active ? 'active' : '')
-            a(href=navData.authStatus.target) !{navData.authStatus.label}
+            if !navData.authStatus.userLinkLabel
+              a(href=navData.authStatus.target) !{navData.authStatus.label}
+            else
+              span Signed in as
+              a(href=navData.authStatus.userLinkTarget) !{navData.authStatus.userLinkLabel}
+              span &nbsp;
+              a(href=navData.authStatus.target) !{navData.authStatus.label}
           
 
 
