@@ -4,6 +4,7 @@ var Schema = mongoose.Schema;
 var activitySchema = new Schema({
   name: {type: String, required: true},
   description: {type: String},
+  color: {type: String},
   /*manageable? for the pause activity*/
 }, {collection: 'activity'});
 

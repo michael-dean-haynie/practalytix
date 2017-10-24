@@ -94,12 +94,12 @@ function activityMigration(callback){
     // insert documents 
     function(callback){
       var data = [
-        ['Sight Reading', 'Description'],
-        ['Technique', 'Description'],
-        ['Theory', 'Description'],
-        ['Method Books', 'Description'],
-        ['Focused Repertoire', 'Description'],
-        ['Paused', 'Description'],
+        ['Sight Reading', 'Description', 'rgba(255, 99, 132, 0.8)'],
+        ['Technique', 'Description', 'rgba(54, 162, 235, 0.8)'],
+        ['Theory', 'Description', 'rgba(75, 192, 192, 0.8)'],
+        ['Method Books', 'Description', 'rgba(2, 123, 59, 0.8)'],
+        ['Focused Repertoire', 'Description', 'rgba(129, 6, 193, 0.8)'],
+        ['Paused', 'Description', 'rgba(224, 229, 101, 0.8)'],
       ];
 
       // build test models
@@ -109,6 +109,7 @@ function activityMigration(callback){
         var activity = Activity({
           name: d[0],
           description: d[1],
+          color: d[2],
         });
         models.push(activity);
       }

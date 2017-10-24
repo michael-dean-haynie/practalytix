@@ -1,6 +1,8 @@
 extends ./sessions-layout
 
 block content
+  input#act-pie-chart-data(type='hidden' value=JSON.stringify(session.blocks))
+
   div.row
     div.col-xs-5
       h2 Session Details
@@ -48,3 +50,51 @@ block content
                 td !{index+1}
                 td !{block.activity.name}
                 td !{block.timeDetails.swDur.default}
+    div.col-xs-12
+      canvas#act-pie-chart
+
+
+block scripts
+  script.
+    $(function($){ // on document ready
+
+      function prepareActPieChartData(blocks){
+        var labels = blocks.map(b => b.activity.name).filter((elem, index, self) => index == self.indexOf(elem)); // unique list of activity names
+        var backgroundColor = labels.map(l => blocks.filter(b => b.activity.name == l)[0].activity.color); // get color of activities-log
+        var data = labels.map(l => blocks.filter(b => b.activity.name == l).map(b => b.durationInSec).reduce((a,b) => a+b, 0)); // sum of sec for each activity
+
+        return {
+          labels: labels,
+          datasets: [{
+            data: data,
+            backgroundColor: backgroundColor
+          }]
+        }
+      }
+
+      var ctx = $('#act-pie-chart');
+      //- var actPieChart = new Chart(ctx, {
+      //-   type: 'doughnut',
+      //-   data: {
+      //-     labels: ['Sight Reading', 'Technique', 'Theory', 'Method Books', 'Focused Repertoire', 'Paused'],
+      //-     datasets: [{
+      //-       data: [10, 20, 30, 40, 50, 60],
+      //-       backgroundColor: [
+      //-         'rgba(255, 99, 132, 0.8)',
+      //-         'rgba(54, 162, 235, 0.8)',
+      //-         'rgba(75, 192, 192, 0.8)',
+      //-         'rgba(2, 123, 59, 0.8)',
+      //-         'rgba(129, 6, 193, 0.8)',
+      //-         'rgba(224, 229, 101, 0.8)',
+      //-       ],
+      //-     }]
+      //-   }
+      //- });
+
+
+      var ctx = $('#act-pie-chart');
+      var actPieChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: prepareActPieChartData(JSON.parse($('#act-pie-chart-data').val()))
+      });
+    });
