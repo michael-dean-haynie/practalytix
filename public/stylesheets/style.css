@@ -25,6 +25,10 @@ h1{text-align: center;}
   width:4em;
 }
 
+.act-color-square{
+  background-clip:content-box;
+}
+
 /* session list (cards) https://www.w3schools.com/w3css/w3css_lists.asp */
 ul.session-list{
   margin:0;

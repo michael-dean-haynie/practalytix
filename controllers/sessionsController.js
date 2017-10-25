@@ -1,9 +1,10 @@
 var bcrypt = require('bcrypt-nodejs');
 var Session = require('../models/session');
 var Activity = require('../models/activity');
-var navData = require('./view-models/navData');
+var navData = require('../view-models/navData');
 var helpers = require('../helpers');
-var SessionFormViewModel = require('./view-models/sessionFormViewModel').model;
+var SessionFormViewModel = require('../view-models/sessionFormViewModel').model;
+var SessionDetailsViewModel = require('../view-models/sessionDetailsViewModel').model;
 var async = require('async');
 var moment = require('moment-timezone');
 var mongoose = require('mongoose');
@@ -53,7 +54,9 @@ exports.details_get = function(req, res, next){
     })
     .exec(function(err, session){
       if (err) {console.log(err); return next(err)};
-      res.render('sessions/details', {navData: navData.get(res), session: session});
+      var sessionDetailsViewModel = new SessionDetailsViewModel();
+      sessionDetailsViewModel.populateFromDBModel(session);
+      res.render('sessions/details', {navData: navData.get(res), session: sessionDetailsViewModel});
     });
 };
 

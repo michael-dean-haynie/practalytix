@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var navData = require('../controllers/view-models/navData');
+var navData = require('../view-models/navData');
 
 var sessionsController = require('../controllers/sessionsController');
 

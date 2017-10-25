@@ -1,6 +1,6 @@
 var bcrypt = require('bcrypt-nodejs');
 var User = require('../models/user');
-var navData = require('./view-models/navData');
+var navData = require('../view-models/navData');
 var moment = require('moment-timezone');
 
 /*

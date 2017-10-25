@@ -1,5 +1,5 @@
 var moment = require('moment-timezone');
-var helpers = require('../../helpers');
+var helpers = require('../helpers');
 var BlockFormViewModel = require('./blockFormViewModel').model;
 
 exports.model = function SessionFormViewModel(){
