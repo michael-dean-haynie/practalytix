@@ -38,20 +38,23 @@ block content
               th Duration
           tbody#activities-log
             each block, index in session.blocks
-              tr
+              tr(class=block.dbModel.activity.name == 'Paused' ? 'active' : '')
                 td !{index+1}
                 td.act-color-square(data-act=block.dbModel.activity._id) &nbsp;
                 td !{block.dbModel.activity.name}
                 td !{block.dbModel.timeDetails.swDur.default}
     div.col-xs-8.col-xs-offset-2.col-sm-offset-0.col-sm-6
-      canvas#act-pie-chart
+      div.panel.panel-default
+        div.panel-heading.text-center Time Spent (in minutes)
+        div.panel-body
+          canvas#act-pie-chart
 
 
 block append scripts
   script.
     // instantiate chart
     var ctx = $('#act-pie-chart');
-    var actPieChart = new Chart(ctx, {
+    window.actPieChart = new Chart(ctx, {
       type: 'doughnut',
       data: !{session.getPieChartData()}
     });

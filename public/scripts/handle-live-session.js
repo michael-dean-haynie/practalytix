@@ -7,6 +7,8 @@ $(function($){ // on document ready
   window.curAct = null; // current activity
   window.lastAct = null; // last activity / previous activity
   window.intervalHandle = null;
+  // window.actPieChart = null; // Set in the script block on the view.
+  window.actPieChartLabelsSet = false;
 
   // do some stuff
   bindActivityButtonHandlers();
@@ -90,6 +92,7 @@ $(function($){ // on document ready
     // read data from hidden input
     var blocksData = JSON.parse(blocksDataInput.val());
     var activityData = JSON.parse(activityDataInput.val());
+    console.log(activityData);
 
     // console
     // console.log(blocksDataInput.val());
@@ -103,7 +106,7 @@ $(function($){ // on document ready
     $('#sw-minutes').html(displayVals.m);
     $('#sw-seconds').html(displayVals.s);
 
-    // Activities 
+    // Activities log
     var theMarkup = '';
     for(var i = 0; i < blocksData.length; i++){
       var num = i+1;
@@ -111,12 +114,51 @@ $(function($){ // on document ready
       var dur = formatAsStopWatch(blocksData[i].durationInSec);
       var durForm = dur.h+':'+dur.m+':'+dur.s;
       var theClass = (i+1) == blocksData.length ? 'success' : name == 'Paused' ? 'active' : '';
+      var activityId = blocksData[i].activity;
 
-      theMarkup = theMarkup + '<tr class="'+theClass+'"><td>'+num+'</td><td>'+name+'</td><td>'+durForm+'</td></tr>';
+      theMarkup = theMarkup + '\
+        <tr class="'+theClass+'">\
+          <td>'+num+'</td>\
+          <td class="act-color-square" data-act="'+activityId+'">&nbsp;</td>\
+          <td>'+name+'</td>\
+          <td>'+durForm+'</td>\
+        </tr>\
+      ';
     }
 
     $('#activities-log').html(theMarkup);
+    var activityColors = activityData.filter(a => a.name != 'Paused');
+    window.helpers.colorActSquares(activityColors);
 
+    // Pie Chart
+    if(!window.actPieChartLabelsSet){
+      var labels = activityData.filter(a => a.name != 'Paused').map(a => a.name);
+      var backgroundColor = activityData.filter(a => a.name != 'Paused').map(a => a.color);
+      var data = activityData.filter(a => a.name != 'Paused').map(a => 0);
+      var result = {
+        labels: labels,
+        datasets: [{
+          data: data,
+          backgroundColor: backgroundColor
+        }]
+      }
+
+      window.actPieChart.destroy();
+      window.actPieChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: result
+      });
+
+      window.actPieChartLabelsSet = true;
+    }
+    else{
+      var data = activityData.filter(a => a.name != 'Paused')
+        .map(a => blocksData.filter(b => b.activity == a._id).map(b => b.durationInSec).reduce((a,b) => a+b, 0));
+      var data = data.map(d => Math.round(100*(d/60))/100);
+
+      window.actPieChart.data.datasets[0].data = data;
+      window.actPieChart.update();
+    }
   }
 
   function formatAsStopWatch(duration){

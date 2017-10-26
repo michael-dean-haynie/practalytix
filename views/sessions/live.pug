@@ -42,18 +42,36 @@ block content
           div.col-xs-6
             button#stop-button.btn.btn-danger.btn-block.btn-lg.hidden End Session
 
-    div.col-xs-12
+    div.col-xs-12.col-sm-6
       div.panel.panel-default
         div.panel-heading.text-center Activites Log
         table.table
           thead
             tr
               th #
+              th
               th Activity
               th Duration
           tbody#activities-log
+    div.col-xs-8.col-xs-offset-2.col-sm-offset-0.col-sm-6
+      div.panel.panel-default
+        div.panel-heading.text-center Time Spent (in minutes)
+        div.panel-body
+          canvas#act-pie-chart
       
 
 block append scripts
   script(src='/scripts/handle-input-timezones.js')
   script(src='/scripts/handle-live-session.js')
+  script.
+      var ctx = $('#act-pie-chart');
+      window.actPieChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Session has not started yet'],
+          datasets: [{
+            data: [1],
+            backgroundColor: []
+          }]
+        }}
+      );
