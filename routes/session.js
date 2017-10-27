@@ -8,6 +8,8 @@ var sessionsController = require('../controllers/sessionsController');
 | sessions
 |-------------------
 */
+router.get('/analytics/', sessionsController.analytics_get);
+
 router.get('/create/', sessionsController.create_get);
 router.post('/create/', sessionsController.create_post);
 

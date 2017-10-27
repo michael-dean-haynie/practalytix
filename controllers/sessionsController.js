@@ -381,3 +381,23 @@ exports.live_get = function(req, res, next){
     res.render('sessions/live', {navData: navData.get(res), session: sessionFormViewModel});
   });
 };
+
+// The sessions/live page posts to the sessions/create action
+
+/*
+|-------------------
+| analytics
+|-------------------
+*/
+exports.analytics_get = function(req, res, next){
+  // Activity.find(function(err, activities){
+  //   if (err) return next(err);
+
+  //   // create empty viewSession with some defaults
+  //   var sessionFormViewModel = new SessionFormViewModel();
+  //   sessionFormViewModel.populateFromDBModel(new Session({user: res.locals.authed_user}));
+  //   sessionFormViewModel.populateActivityOptions(activities);
+
+    res.render('sessions/analytics', {navData: navData.get(res)});
+  // });
+};
