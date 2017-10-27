@@ -1,6 +1,20 @@
 extends ./sessions-layout
 
 block content
+  p !{pagerModel.page}
+  p !{pagerModel.limit}
+  p !{pagerModel.countSelected}
+  p !{pagerModel.countTotal}
+  p !{pagerModel.getPreviousButtonUrl()}
+  p !{pagerModel.getNextButtonUrl()}
+  p #{pagerModel.getStartNo()} - #{pagerModel.getEndNo()} of #{pagerModel.countTotal}
+
+  ul.pagination
+    li: a(href=pagerModel.getPreviousButtonUrl()): span.glyphicon.glyphicon-chevron-left
+    li: a(href=pagerModel.getNextButtonUrl()): span.glyphicon.glyphicon-chevron-right
+
+
+
   div.row
     div.col-xs-5
       h2 Session History

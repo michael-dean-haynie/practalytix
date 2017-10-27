@@ -9,6 +9,7 @@ var async = require('async');
 var moment = require('moment-timezone');
 var mongoose = require('mongoose');
 var Block = require('../models/block');
+var PagerModel = require('../view-models/pagerModel').model;
 
 
 /*
@@ -17,22 +18,53 @@ var Block = require('../models/block');
 |-------------------
 */
 exports.index_get = function(req, res, next){
-  Session.find({user: req.session.user_id})
-    .populate('user')
-    .populate({
-      path: 'blocks',
-      options: {
-        sort: {'start': 'asc'},
+  var page = parseInt(req.query.page) || 1;
+  var limit = parseInt(req.query.limit) || 10;
+
+  async.parallel([
+      function(callback){
+        Session.find({user: req.session.user_id})
+          .count()
+          .exec(function(err, count){
+            callback(err, count);
+          });
       },
-      populate: {
-        path: 'activity',
-      } 
-    })
-    .sort({start: 'desc'})
-    .exec(function(err, sessions){
-      if (err) {console.log(err); return next(err)};
-      res.render('sessions/index', {navData: navData.get(res), sessions: sessions});
-    });
+      function(callback){
+        Session.find({user: req.session.user_id})
+          .populate('user')
+          .populate({
+            path: 'blocks',
+            options: {
+              sort: {'start': 'asc'},
+            },
+            populate: {
+              path: 'activity',
+            } 
+          })
+          .sort({start: 'desc'})
+          .skip((page-1)*limit).limit(limit)
+          .exec(function(err, sessions){
+            callback(err, sessions);
+          });
+      }
+    ],
+    function(err, results){
+      console.log(err);
+      if (err) {
+        console.log('ERRORHERE');
+        console.log(err);
+        console.log(results);
+        return next(err);
+      }
+      var countTotal = results[0];
+      var sessions = results[1];
+      var countSelected = sessions.length;
+      var thePath = '/sessions';
+      var pagerModel = new PagerModel(page, limit, countSelected, countTotal, thePath);
+
+      res.render('sessions/index', {navData: navData.get(res), sessions: sessions, pagerModel: pagerModel});
+    }
+  );
 };
 
 /*
