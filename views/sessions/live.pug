@@ -1,5 +1,8 @@
 extends ./sessions-layout
 
+block navStatus
+  - navData.live.active = true;
+
 block content
   div.row
     div.col-xs-6.text-left

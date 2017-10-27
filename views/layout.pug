@@ -23,6 +23,9 @@ html
           if(navData.management)
             li(class=navData.management.active ? 'active' : '')
               a(href=navData.management.target) !{navData.management.label}
+          if(navData.live)
+            li(class=navData.live.active ? 'active' : '')
+              a(href=navData.live.target) !{navData.live.label}
           if(navData.analytics)
             li(class=navData.analytics.active ? 'active' : '')
               a(href=navData.analytics.target) !{navData.analytics.label}

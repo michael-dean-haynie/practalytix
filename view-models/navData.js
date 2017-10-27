@@ -11,7 +11,8 @@ exports.get = function(res){
   }
   else {
     navData.authStatus = {label: 'Signed in as '+user.firstName+' '+user.familyName, target: '/auth/signout'};
-    navData.management = {label: 'Management', target: '/sessions'};
+    navData.live = {label: 'Live Recording', target: 'sessions/live'};
+    navData.management = {label: 'Session Management', target: '/sessions'};
     navData.analytics = {label: 'Analytics', target: '#'};
   }
 
