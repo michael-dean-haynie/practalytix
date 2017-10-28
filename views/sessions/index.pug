@@ -1,20 +1,6 @@
 extends ./sessions-layout
 
 block content
-  p !{pagerModel.page}
-  p !{pagerModel.limit}
-  p !{pagerModel.countSelected}
-  p !{pagerModel.countTotal}
-  p !{pagerModel.getPreviousButtonUrl()}
-  p !{pagerModel.getNextButtonUrl()}
-  p #{pagerModel.getStartNo()} - #{pagerModel.getEndNo()} of #{pagerModel.countTotal}
-
-  ul.pagination
-    li: a(href=pagerModel.getPreviousButtonUrl()): span.glyphicon.glyphicon-chevron-left
-    li: a(href=pagerModel.getNextButtonUrl()): span.glyphicon.glyphicon-chevron-right
-
-
-
   div.row
     div.col-xs-5
       h2 Session History
@@ -25,19 +11,42 @@ block content
 
   div.row
     div.col-xs-12
-      ul.session-list
-        each session in sessions
-          li
-            div.row
-              div.col-xs-6.col-md-4
-                span.session-list-date !{session.timeDetails.startDateFormatted}
-                br
-                span.session-list-time !{session.timeDetails.timeSpan}
-                span &nbsp;
-                span (!{session.timeDetails.swDur.default})
-              div.col-xs-3.col-md-6
-                each act in session.activityList
-                  span.session-list-act !{act}
-              div.col-xs-3.col-md-2.text-right
-                a.btn.btn-default(href=session.urlDetails) View Details
+      if pagerModel.countTotal == 0
+        div.alert.alert-warning 
+          strong Whoops!
+          span &nbsp;No sessions were found!
+
+      if pagerModel.countTotal != 0
+        ul.pagination
+          li: span !{pagerModel.getSpanText()}
+          li: a(href=pagerModel.getPreviousButtonUrl()): span.glyphicon.glyphicon-chevron-left
+          each p in pagerModel.getPages()
+            li(class=pagerModel.page == p ? 'active' : '')
+              a(href=pagerModel.thePath+'?page='+p+'&limit='+pagerModel.limit) #{p}
+          li: a(href=pagerModel.getNextButtonUrl()): span.glyphicon.glyphicon-chevron-right
+
+        ul.session-list
+          each session in sessions
+            li
+              div.row
+                div.col-xs-6.col-md-4
+                  span.session-list-date !{session.timeDetails.startDateFormatted}
+                  br
+                  span.session-list-time !{session.timeDetails.timeSpan}
+                  span &nbsp;
+                  span (!{session.timeDetails.swDur.default})
+                div.col-xs-3.col-md-6
+                  each act in session.activityList
+                    span.session-list-act !{act}
+                div.col-xs-3.col-md-2.text-right
+                  a.btn.btn-default(href=session.urlDetails) View Details
+
+        ul.pagination
+          li: span !{pagerModel.getSpanText()}
+          li: a(href=pagerModel.getPreviousButtonUrl()): span.glyphicon.glyphicon-chevron-left
+          each p in pagerModel.getPages()
+            li(class=pagerModel.page == p ? 'active' : '')
+              a(href=pagerModel.thePath+'?page='+p+'&limit='+pagerModel.limit) #{p}
+          li: a(href=pagerModel.getNextButtonUrl()): span.glyphicon.glyphicon-chevron-right
+
 

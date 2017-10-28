@@ -49,13 +49,7 @@ exports.index_get = function(req, res, next){
       }
     ],
     function(err, results){
-      console.log(err);
-      if (err) {
-        console.log('ERRORHERE');
-        console.log(err);
-        console.log(results);
-        return next(err);
-      }
+      if (err) {return next(err);}
       var countTotal = results[0];
       var sessions = results[1];
       var countSelected = sessions.length;

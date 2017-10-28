@@ -126,7 +126,7 @@ SCHEMA
     - this causes problems like what if you delete a block type? Does that delete all those blocks? Just deactivate it? 2 blocks that are labeled similarly may confuse things especially if they can get activated/deactivated.
 
 - THEN THE FUN BEGINS
-  pu@ all pages need their own view model. Index especially so it can have access to the virtual properties for the chart. At that point, we should compute the information for the chart in that view-model!
+  - Make index page better when there are zero items.
 
 
 TODO:
