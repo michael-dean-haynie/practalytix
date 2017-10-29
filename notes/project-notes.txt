@@ -126,7 +126,9 @@ SCHEMA
     - this causes problems like what if you delete a block type? Does that delete all those blocks? Just deactivate it? 2 blocks that are labeled similarly may confuse things especially if they can get activated/deactivated.
 
 - THEN THE FUN BEGINS
-  - Make index page better when there are zero items.
+  - cross browser test
+    - particularly the date picker. Maybe start using flat pickr 
+  - analytics page
 
 
 TODO:

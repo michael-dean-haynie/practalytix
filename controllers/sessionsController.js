@@ -108,7 +108,6 @@ exports.create_post = function(req, res, next){
   Activity.find(function(err, activities){
     if (err) return next(err);
     errors = [];
-    // errors.push({msg: 'This is a debug error'});
 
     var session = new Session({user: res.locals.authed_user});
 

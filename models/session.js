@@ -38,7 +38,7 @@ sessionSchema.virtual('timeDetails').get(function(){
   moment.relativeTimeRounding(x => x); // remove rounding
   var durInSec = moment.duration(moment(this.end).diff(moment(this.start))).asSeconds();
   return {
-    startDateFormatted: moment(this.start).tz('utc').format('dddd, MMMM Do YYYY'),
+    startDateFormatted: moment(this.start).tz(this.user.timezone).format('dddd, MMMM Do YYYY'),
     timeSpan: moment(this.start).tz(this.user.timezone).format('h:mm a') + ' - ' + moment(this.end).tz(this.user.timezone).format('h:mm a'),
     // durationInMin: moment.duration(moment(this.end).diff(moment(this.start))).asMinutes(),
     durationInSec: durInSec,
