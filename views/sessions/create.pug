@@ -12,8 +12,8 @@ block content
     div.col-xs-12
       form(action='/sessions/create', method="POST")
         div.form-group
-          label.control-label(for='input-start-date-time') Date
-          input#input-start-date-time.form-control(type='datetime-local', name='startDateTime' required=true placeholder='' value='')
+          label.control-label(for='input-start-date-time') Start Date
+          input#input-start-date-time.form-control.flatpickr(type='text', name='startDateTime' required=true, data-init-val='now')
 
         div.form-group
           div.panel.panel-default
@@ -41,8 +41,6 @@ block content
 
           input#activity-options-data(type='hidden' value=session ? session.getActivityOptionsJSON() : '')
 
-          input#session-start-data(type='hidden' value=session.startDateTime)
-
         div.form-group
           if  errors && errors.length
             div.alert.alert-danger
@@ -52,4 +50,3 @@ block content
 
 block append scripts
   script(src='/scripts/handle-session-block-inputs.js')
-  script(src='/scripts/handle-input-timezones.js')

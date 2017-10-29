@@ -126,6 +126,8 @@ SCHEMA
     - this causes problems like what if you delete a block type? Does that delete all those blocks? Just deactivate it? 2 blocks that are labeled similarly may confuse things especially if they can get activated/deactivated.
 
 - THEN THE FUN BEGINS
+  - refactor edit and manual create pages to use two inputs for start time
+    - make sure the live page still works too.
   - cross browser test
     - particularly the date picker. Maybe start using flat pickr 
   - analytics page

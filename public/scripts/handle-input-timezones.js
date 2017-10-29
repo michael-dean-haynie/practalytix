@@ -7,7 +7,6 @@ $(function($){ // on document ready
 
   // define some functions
   function updateStartInput(){
-    // console.log(startDataInput.val())
     startInput.val(startDataInput.val());
   }
 });

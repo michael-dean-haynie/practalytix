@@ -9,3 +9,16 @@ window.helpers = {
     });
   }
 }
+
+$(function($){ // on document ready 
+  $(".flatpickr").each(function(){
+    var iv = $(this).data('init-val');
+    var defaultDate = (iv == 'now' ? Date.now() : iv);
+
+    $(this).flatpickr({
+      enableTime: true,
+      altInput: true,
+      defaultDate: defaultDate,
+    });
+  });
+});

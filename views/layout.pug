@@ -14,6 +14,10 @@ html
     script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js')
     script(src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js')
 
+    //- flatpickr
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
   body
     nav.navbar.navbar-default(role='navigation')
       div.navbar-collapse
@@ -39,13 +43,6 @@ html
               a(href=navData.authStatus.userLinkTarget) !{navData.authStatus.userLinkLabel}
               span &nbsp;
               a(href=navData.authStatus.target) !{navData.authStatus.label}
-          
-
-
-    //- h1 Practalytix
-    //- ul
-    //-   each item in navData
-    //-     li: a(href=item.target) !{item.label}
 
     div#main.container-fluid
       block content
