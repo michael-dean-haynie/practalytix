@@ -4,7 +4,31 @@ block navStatus
   - navData.analytics.active = true;
 
 block content
- p This is the analytics page!
+  div.row
+    div.col.xs-12
+      h2 Analytics
+      p This is the analytics page! Right now it's showing based off a date range from first sessions to last session. Later will add configuration for custom ranges.
+
+      p Total sessions recorded: !{model.getTotalSessionCount()}
+      p Total Time Recorded: !{model.getTotalSessionDuration().default}
+  div.row
+    div.col-xs-4
+      div.panel.panel-default
+        div.panel-heading.text-center Hours Recorded Per Activity
+        div.panel-body
+          canvas#total-activity-bar-chart
+    div.col-xs-4
+      div.panel.panel-default
+        div.panel-heading.text-center Percentage Recorded Per Activity
+        div.panel-body
+          canvas#total-activity-pie-chart
+
       
 
 block append scripts
+  script.
+    // instantiate charts
+    var ctx = $('#total-activity-bar-chart');
+    window.totalActivityBarChart = new Chart(ctx, !{model.getTotalActivityBarData()});
+     var ctx = $('#total-activity-pie-chart');
+    window.totalActivityPieChart = new Chart(ctx, !{model.getTotalActivityPieData()});

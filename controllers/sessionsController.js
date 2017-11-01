@@ -10,6 +10,7 @@ var moment = require('moment-timezone');
 var mongoose = require('mongoose');
 var Block = require('../models/block');
 var PagerModel = require('../view-models/pagerModel').model;
+var AnalyticsViewModel = require('../view-models/analyticsViewModel').model;
 
 
 /*
@@ -423,6 +424,39 @@ exports.analytics_get = function(req, res, next){
   //   sessionFormViewModel.populateFromDBModel(new Session({user: res.locals.authed_user}));
   //   sessionFormViewModel.populateActivityOptions(activities);
 
-    res.render('sessions/analytics', {navData: navData.get(res)});
+    // res.render('sessions/analytics', {navData: navData.get(res)});
   // });
+  async.parallel([
+    function(callback){
+      Session.find({user: req.session.user_id})
+        .populate('user')
+        .populate({
+          path: 'blocks',
+          options: {
+            sort: {'start': 'asc'},
+          },
+          populate: {
+            path: 'activity',
+          } 
+        })
+        .sort({start: 'asc'})
+        .exec(function(err, sessions){
+          callback(err, sessions);
+        });
+    },
+    function(callback){
+      Activity.find(function(err, activities){
+        callback(err, activities);
+      })
+    }
+    ], function(err, results){
+      if (err) {return next(err);}
+      var sessions = results[0];
+      var activities = results[1];
+
+      viewModel = new AnalyticsViewModel(sessions, activities);
+
+      res.render('sessions/analytics', {navData: navData.get(res), model: viewModel});
+  });
+
 };

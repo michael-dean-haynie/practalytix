@@ -12,10 +12,6 @@ exports.momentConfig = function(moment){
   return moment;
 }
 
-// exports.formatDateForInput = function(date){
-//   return moment(date).utc().format('YYYY-MM-DD[T]HH:mm');
-// }
-
 exports.formatAsStopWatch = function(duration){ // duration is expected in seconds
   var hours = Math.floor(duration / 60 / 60);
   var mins = Math.floor(duration / 60) - (hours * 60);
