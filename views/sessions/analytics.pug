@@ -12,12 +12,18 @@ block content
       p Total sessions recorded: !{model.getTotalSessionCount()}
       p Total Time Recorded: !{model.getTotalSessionDuration().default}
   div.row
-    div.col-xs-4
+    div.col-xs-12
+      div.panel.panel-default
+        div.panel-heading.text-center Hours Recorded Per Activity
+        div.panel-body
+          canvas#total-activity-line-chart
+  div.row
+    div.col-xs-6
       div.panel.panel-default
         div.panel-heading.text-center Hours Recorded Per Activity
         div.panel-body
           canvas#total-activity-bar-chart
-    div.col-xs-4
+    div.col-xs-6
       div.panel.panel-default
         div.panel-heading.text-center Percentage Recorded Per Activity
         div.panel-body
@@ -30,5 +36,7 @@ block append scripts
     // instantiate charts
     var ctx = $('#total-activity-bar-chart');
     window.totalActivityBarChart = new Chart(ctx, !{model.getTotalActivityBarData()});
-     var ctx = $('#total-activity-pie-chart');
+    var ctx = $('#total-activity-pie-chart');
     window.totalActivityPieChart = new Chart(ctx, !{model.getTotalActivityPieData()});
+    var ctx = $('#total-activity-line-chart');
+    window.totalActivityLineChart = new Chart(ctx, !{model.getTotalActivityLineData()});
