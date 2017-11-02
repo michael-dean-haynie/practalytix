@@ -128,17 +128,22 @@ SCHEMA
 - THEN THE FUN BEGINS
   - analytics page
     - Line chart
-      - Fix title
-      - Even out x-axis date labels based on number of days displayed
-      - Make sure timezones are getting set right.
 
 
 TODO:
-- make sure bad urls get 404's like if session id is bad
-- also make sure authed use has permission to view page
-- refactor middleware to use the determine auth middleware
+- make sure bad urls get 404's like if session id is bad (.5hr)
+- also make sure authed use has permission to view page (.5hr)
+- refactor middleware to use the determine auth middleware (.5hr)
+
 - dash needs to be renamed? More of a landing page for people to tell them what the app is about before we demand authentication
-- Install FF for testing (particularly the date/time inputs)
-- edit / delete user
+  - screenshots of analytics / data entry (.5hr)
+  - descriptions  (.5hr)
+- user management
+  - edit user (1.5hr)
+  - delete account (1hr)
 - forgot my password
+  - reconfigure mail service (.5hr)
+  - send token page (1hr)
+  - new password page (1hr)
 - ?.csv tool for spreadsheets. ex date session activity
+  - probably not going to do.

@@ -181,7 +181,7 @@ function sessionMigration(callback){
         function(callback){
           // some config
           var userId = userIds[userIndex];
-          var daysRecording = 300;
+          var daysRecording = 100;
           var baseFreq = 0.66; // sessions per day
           var maxLength = 120; // max length of session in minutes
           var blockLength = 15;
