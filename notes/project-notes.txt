@@ -131,10 +131,9 @@ SCHEMA
 
 
 TODO:
-- make sure bad urls get 404's like if session id is bad (.5hr)
-- also make sure authed use has permission to view page (.5hr)
-- refactor middleware to use the determine auth middleware (.5hr)
-
+- Finish analytics page
+  - add date range
+  - handle no sessions found
 - dash needs to be renamed? More of a landing page for people to tell them what the app is about before we demand authentication
   - screenshots of analytics / data entry (.5hr)
   - descriptions  (.5hr)
@@ -147,3 +146,4 @@ TODO:
   - new password page (1hr)
 - ?.csv tool for spreadsheets. ex date session activity
   - probably not going to do.
+- Revisit style rules for beter mobile experience.

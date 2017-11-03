@@ -13,6 +13,7 @@ var MongoStore = require('connect-mongo')(session);
 var mongoose = require('mongoose');
 var expressValidator = require('express-validator');
 var middleware = require('./middleware');
+var navData = require('./view-models/navData');
 
 // require models
 var User = require('./models/user');
@@ -67,18 +68,23 @@ app.use('/sessions', middleware.authed, sessionRoutes);
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
-  next(err);
+  res.render('404', {navData: navData.get(res)});
 });
 
 // error handler
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
+  res.locals.error = err;
   res.status(err.status || 500);
-  res.render('error');
+  if (req.app.get('env') === 'development'){
+    // render the error page
+    res.render('error');
+  }
+  else{
+    // render the 500 page
+    res.render('500');
+  }
 });
 
 module.exports = app;

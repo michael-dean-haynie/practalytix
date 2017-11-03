@@ -69,6 +69,7 @@ exports.index_get = function(req, res, next){
 */
 exports.details_get = function(req, res, next){
   Session.findById(req.params.sessionId)
+    .where('user', req.session.user_id)
     .populate('user')
     .populate({
       path: 'blocks',
@@ -81,6 +82,14 @@ exports.details_get = function(req, res, next){
     })
     .exec(function(err, session){
       if (err) {console.log(err); return next(err)};
+
+      if (!session){
+        return next(new Error("Could not find requested item."));
+      }
+      // if (session.user._id != req.session.user_id){
+      //   return next(new Error("Could not find requested item."));
+      // }
+
       var sessionDetailsViewModel = new SessionDetailsViewModel();
       sessionDetailsViewModel.populateFromDBModel(session);
       res.render('sessions/details', {navData: navData.get(res), session: sessionDetailsViewModel});
@@ -207,6 +216,7 @@ exports.edit_get = function(req, res, next){
       },
       function(callback){
         Session.findById(req.params.sessionId)
+          .where('user', req.session.user_id)
           .populate('user')
           .populate({
             path: 'blocks',
@@ -224,9 +234,17 @@ exports.edit_get = function(req, res, next){
     ],
     function(err, results){
       if (err) return next(err);
+
+      var activities = results[0];
+      var session = results[1];
+
+      if (!session){
+        return next(new Error("Could not find requested item."));
+      }
+
       var sessionFormViewModel = new SessionFormViewModel();
-      sessionFormViewModel.populateActivityOptions(results[0]);
-      sessionFormViewModel.populateFromDBModel(results[1]);
+      sessionFormViewModel.populateActivityOptions(activities);
+      sessionFormViewModel.populateFromDBModel(session);
 
       res.render('sessions/edit', {navData: navData.get(res), session: sessionFormViewModel});
   });
@@ -261,6 +279,10 @@ exports.edit_post = function(req, res, next){
       var activities = results[0];
       var session = results[1];
       var startDateTime = req.body.startDateTime;
+
+      if (!session){
+        return next(new Error("Could not find requested item."));
+      }
 
       // Set as user's timezone and convert from there to UTC so the sessionFormViewModel can convert back
       moment.tz.setDefault(res.locals.authed_user.timezone);
@@ -371,8 +393,8 @@ exports.edit_post = function(req, res, next){
 exports.delete_get = function(req, res, next){
   Session.findById(req.params.sessionId, function(err, session){
     if (err) { return next(err); }
-    if (!session) { return next(new Error("Could not find session.")); }
-    if (session.user.toString() != res.locals.authed_user._id.toString()) { return next(new Error('Session does not belong to authed user.')); } 
+    if (!session) { return next(new Error("Could not find requested item.")); }
+    if (session.user.toString() != res.locals.authed_user._id.toString()) { return next(new Error('Could not find requested item.')); } 
     res.render('sessions/delete', {navData: navData.get(res), session: session});
   });
 };
@@ -381,7 +403,7 @@ exports.delete_post = function(req, res, next){
   Session.findById(req.params.sessionId, function(err, session){
     if (err) { return next(err); }
     if (!session) { return next(new Error("Could not find session.")); }
-    if (session.user.toString() != res.locals.authed_user._id.toString()) { return next(new Error('Session does not belong to authed user.')); } 
+    if (session.user.toString() != res.locals.authed_user._id.toString()) { return next(new Error('Could not find requested item.')); } 
     
     Session.remove({_id: session._id}, function(err){
       if (err) { return next(err); }
@@ -416,16 +438,6 @@ exports.live_get = function(req, res, next){
 |-------------------
 */
 exports.analytics_get = function(req, res, next){
-  // Activity.find(function(err, activities){
-  //   if (err) return next(err);
-
-  //   // create empty viewSession with some defaults
-  //   var sessionFormViewModel = new SessionFormViewModel();
-  //   sessionFormViewModel.populateFromDBModel(new Session({user: res.locals.authed_user}));
-  //   sessionFormViewModel.populateActivityOptions(activities);
-
-    // res.render('sessions/analytics', {navData: navData.get(res)});
-  // });
   async.parallel([
     function(callback){
       Session.find({user: req.session.user_id})
