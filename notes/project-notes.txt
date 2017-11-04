@@ -134,13 +134,11 @@ TODO:
 - dash needs to be renamed? More of a landing page for people to tell them what the app is about before we demand authentication
   - screenshots of analytics / data entry (.5hr)
   - descriptions  (.5hr)
-- user management
-  - edit user (1.5hr)
-  - delete account (1hr)
 - forgot my password
   - reconfigure mail service (.5hr)
   - send token page (1hr)
   - new password page (1hr)
+  - add link to edit account page
 - ?.csv tool for spreadsheets. ex date session activity
   - probably not going to do.
 - Revisit style rules for beter mobile experience.

@@ -1,0 +1,27 @@
+extends ../layout
+
+block navStatus
+  - navData.authStatus.active = true;
+
+block content
+  div.row
+    div.col-xs-5
+      h2 Account Details
+    div.col-xs-7.text-right.button-list
+      h2
+        a.btn.btn-info(href='/manage-auth/edit') Edit Account
+        a.btn.btn-danger(href='/auth/signout') Sign Out
+
+    div.col-xs-12.well
+      p
+        strong First Name:&nbsp;
+        span #{user.firstName}
+      p
+        strong Family Name:&nbsp;
+        span #{user.familyName}
+      p
+        strong Timezone:&nbsp;
+        span #{user.timezone}
+      p
+        strong Email:&nbsp;
+        span #{user.email}

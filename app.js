@@ -20,6 +20,7 @@ var User = require('./models/user');
 
 var rootRoutes = require('./routes/root');
 var authRoutes = require('./routes/auth');
+var manageAuthRoutes = require('./routes/manageAuth');
 var sessionRoutes = require('./routes/session');
 
 var app = express();
@@ -62,6 +63,7 @@ app.use(middleware.determineAuth);
 // routes
 app.use('/', rootRoutes);
 app.use('/auth', middleware.noAuth, authRoutes);
+app.use('/manage-auth', middleware.authed, manageAuthRoutes);
 app.use('/sessions', middleware.authed, sessionRoutes);
 
 // catch 404 and forward to error handler

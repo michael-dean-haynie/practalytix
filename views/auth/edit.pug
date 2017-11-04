@@ -1,14 +1,18 @@
 extends ../layout
 
 block navStatus
-    - navData.authStatus.active = true;
+  - navData.authStatus.active = true;
 
 block content
   div.row
+    div.col-xs-5
+      h2 Edit Account
+    div.col-xs-7.text-right.button-list
+      h2
+        a.btn.btn-danger(href='/manage-auth/delete') Delete Account
+  div.row
     div.col-xs-12
-      h2 Sign up
-
-      form(action='/auth/signup', method="POST")
+      form(action='/manage-auth/edit', method="POST")
         div.form-group
           label.control-label(for='input-first-name') First Name
           input#input-first-name.form-control(type='text', name='firstName' required=true placeholder='John' value=user ? user.firstName : '')
@@ -27,19 +31,12 @@ block content
         div.form-group
           label.control-label(for='input-email') Email
           input#input-email.form-control(type='email', name='email' required=true placeholder='Email' value=user ? user.email : '') 
-        div.form-group
-          label.control-label(for='input-password') Password
-          input#input-password.form-control(type='password', name='password' required=true placeholder='Password' value=user ? user.password : '')
-        div.form-group
-          label.control-label(for='input-confirm-password') Confirm Password
-          input#input-confirm-password.form-control(type='password', name='confirm_password' required=true placeholder='Confirm Password' value=user ? user.confirm_password : '')
         div.form-group.button-list
-          button.btn.btn-primary(type='submit') Sign up
-          a.btn.btn-default(href='/auth/signin') I already have an account!
+          button.btn.btn-primary(type='submit') Update Account
+          a.btn.btn-default(href='/manage-auth/details') Cancel
         div.form-group
           if  errors && errors.length
             div.alert.alert-danger
               ul
                 each error in errors
                   li !{error.msg}
-

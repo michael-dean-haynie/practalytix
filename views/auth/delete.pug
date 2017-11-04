@@ -1,0 +1,14 @@
+extends ../layout
+
+block navStatus
+  - navData.authStatus.active = true;
+
+block content
+  h3 Delete Account
+
+  p Are you sure you want to delete this account?
+
+  form(action='/manage-auth/delete', method="POST")
+    div.form-group.button-list
+      button.btn.btn-danger(type='submit') Delete
+      a.btn.btn-default(href='/manage-auth/edit') Cancel

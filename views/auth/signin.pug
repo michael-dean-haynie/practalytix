@@ -1,26 +1,28 @@
 extends ../layout
 
 block navStatus
-    - navData.authStatus.active = true;
+  - navData.authStatus.active = true;
 
 block content
-  h2 Sign In
+  div.row
+    div.col-xs-12
+      h2 Sign In
 
-  form(action='/auth/signin', method="POST")
-    div.form-group
-      label.control-label(for='input-email') Email
-      input#input-email.form-control(type='email', name='email' required=true placeholder='Email' value=user ? user.email : '') 
-    div.form-group
-      label.control-label(for='input-password') Password
-      input#input-password.form-control(type='password', name='password' required=true placeholder='Password' value=user ? user.password : '')
-    div.form-group.button-list
-      button.btn.btn-primary(type='submit') Sign In
-      a.btn.btn-default(href='/auth/fyp') Forgot your password?
-      a.btn.btn-default(href='/auth/signup') Creat a new account
-    div.form-group
-      if  errors && errors.length
-        div.alert.alert-danger
-          ul
-            each error in errors
-              li !{error.msg}
+      form(action='/auth/signin', method="POST")
+        div.form-group
+          label.control-label(for='input-email') Email
+          input#input-email.form-control(type='email', name='email' required=true placeholder='Email' value=user ? user.email : '') 
+        div.form-group
+          label.control-label(for='input-password') Password
+          input#input-password.form-control(type='password', name='password' required=true placeholder='Password' value=user ? user.password : '')
+        div.form-group.button-list
+          button.btn.btn-primary(type='submit') Sign In
+          a.btn.btn-default(href='/auth/fyp') Forgot your password?
+          a.btn.btn-default(href='/auth/signup') Creat a new account
+        div.form-group
+          if  errors && errors.length
+            div.alert.alert-danger
+              ul
+                each error in errors
+                  li !{error.msg}
 

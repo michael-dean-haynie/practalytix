@@ -10,7 +10,7 @@ exports.get = function(res){
     navData.authStatus = {label: 'Sign In / Sign Up', target: '/auth/signin'};
   }
   else {
-    navData.authStatus = {label: 'Signed in as '+user.firstName+' '+user.familyName, target: '/auth/signout'};
+    navData.authStatus = {label: 'Signed in as '+user.firstName+' '+user.familyName, target: '/manage-auth/details'};
     navData.live = {label: 'Live Recording', target: '/sessions/live'};
     navData.management = {label: 'Session Management', target: '/sessions'};
     navData.analytics = {label: 'Analytics', target: '/sessions/analytics'};

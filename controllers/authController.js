@@ -91,7 +91,7 @@ exports.signup_post = function(req, res, next){
   // check for existing user with email
   User.findOne({email: req.body.email}, function(err, user){
     if (err) return next(err);
-    if (user) errors.push({msg: 'That email is alreaady taken :/'});
+    if (user) errors.push({msg: 'That email is already taken :/'});
     if (errors.length){
       var timezones = moment.tz.names(); // an array of all the moment-timezone supported timezones
       return res.render('auth/signup', {navData: navData.get(res), user: viewUser, timezones, errors: errors});
@@ -120,6 +120,92 @@ exports.signup_post = function(req, res, next){
 exports.signout_get = function(req, res, next){
   req.session.destroy();
   res.redirect('/');
+}
+
+/*
+|-------------------
+| details
+|-------------------
+*/
+exports.details_get = function(req, res, next){
+  User.findOne({_id: res.locals.authed_user._id}, function(err, user){
+    if (err) {return next(err);}
+    res.render('auth/details', {navData: navData.get(res), user: user});
+  });
+}
+
+/*
+|-------------------
+| edit
+|-------------------
+*/
+exports.edit_get = function(req, res, next){
+  var timezones = moment.tz.names(); // an array of all the moment-timezone supported timezones
+  User.findOne({_id: res.locals.authed_user._id}, function(err, user){
+    if (err) {return next(err);}
+    res.render('auth/edit', {navData: navData.get(res), user: user, timezones, errors: []});
+  });
+}
+
+exports.edit_post = function(req, res, next){
+  // validate
+  req.assert('firstName', 'First Name must be specified').notEmpty();
+  req.assert('familyName', 'Family Name must be specified').notEmpty();
+  req.assert('timezone', 'Timezone must be specified').notEmpty();
+  req.assert('email', 'Email must be specified').notEmpty();
+  req.assert('email', 'Email must be a vailid email address').isEmail();
+
+  // escape values cause we're about to inject them into a new page if they fail
+  req.sanitize('firstName').trim(); req.sanitize('firstName').escape();
+  req.sanitize('familyName').trim(); req.sanitize('familyName').escape();
+  req.sanitize('timezone').trim();// req.sanitize('timezone').escape(); // this was escaping the slashes in the timezones in the db
+  req.sanitize('email').trim(); req.sanitize('email').escape();
+
+  errors = req.validationErrors() || [];
+
+  viewUser = new User({
+    firstName: req.body.firstName,
+    familyName: req.body.familyName,
+    timezone: req.body.timezone,
+    email: req.body.email,
+  });
+
+  // check for existing user with email
+  User.findOne({email: req.body.email}, function(err, user){
+    if (err) return next(err);
+    if (user && user.email != res.locals.authed_user.email) errors.push({msg: 'That email is already taken :/'});
+    if (errors.length){
+      var timezones = moment.tz.names(); // an array of all the moment-timezone supported timezones
+      return res.render('auth/edit', {navData: navData.get(res), user: viewUser, timezones, errors: errors});
+    } else{
+      user.firstName = viewUser.firstName;
+      user.familyName = viewUser.familyName;
+      user.timezone = viewUser.timezone;
+      user.email = viewUser.email;
+      user.save();
+      res.redirect('/manage-auth/details');
+    }
+  });
+}
+
+/*
+|-------------------
+| delete
+|-------------------
+*/
+exports.delete_get = function(req, res, next){
+  res.render('auth/delete', {navData: navData.get(res)});
+}
+
+exports.delete_post = function(req, res, next){
+  User.findById(res.locals.authed_user._id, function(err, user){
+    if (err) { return next(err); }    
+    User.remove({_id: res.locals.authed_user._id}, function(err){
+      if (err) { return next(err); }
+      req.session.destroy();
+      res.redirect('/');
+    });
+  });
 }
 
 
