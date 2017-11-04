@@ -131,9 +131,6 @@ SCHEMA
 
 
 TODO:
-- Finish analytics page
-  - add date range
-  - handle no sessions found
 - dash needs to be renamed? More of a landing page for people to tell them what the app is about before we demand authentication
   - screenshots of analytics / data entry (.5hr)
   - descriptions  (.5hr)

@@ -1,10 +1,31 @@
 var moment = require('moment-timezone');
 var helpers = require('../helpers');
 
-exports.model = function AnalyticsViewModel(sessions, activities){
+exports.model = function AnalyticsViewModel(sessions, activities, timezone, start, end){
   this.sessions = sessions;
   this.availableActivities = activities;
-  this.timezone = this.sessions.length ? this.sessions[0].user.timezone : null;
+  this.start = start || null
+  this.end = end || null;
+  this.timezone = timezone;
+
+  // set start and end if null
+  if (this.start == null || this.end == null){
+    if (sessions && sessions.length){
+      this.start = this.sessions[0].start;
+      this.end = this.sessions[this.sessions.length-1].start;
+    }
+    else{
+      this.start = new Date();
+      this.end = new Date();
+    }
+
+  }
+
+  this.getDateRange = function(){
+    var s = moment(this.start).tz(this.timezone).format('YYYY-MM-DD');
+    var e = moment(this.end).tz(this.timezone).format('YYYY-MM-DD');
+    return s + ' to ' + e;
+  }
 
   // totals
   this.getTotalSessionCount = function(){
@@ -144,7 +165,13 @@ exports.model = function AnalyticsViewModel(sessions, activities){
               time: {
                 unit: unit,
               }
-            }]
+            }],
+           yAxes: [{
+            ticks: {
+              beginAtZero: true,
+              min: 0
+            }    
+          }]
           }
         }
       };

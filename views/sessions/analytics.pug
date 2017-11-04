@@ -5,27 +5,45 @@ block navStatus
 
 block content
   div.row
-    div.col.xs-12
+    div.col-xs-12
       h2 Analytics
-      p This is the analytics page! Right now it's showing based off a date range from first sessions to last session. Later will add configuration for custom ranges.
 
-      p Total sessions recorded: !{model.getTotalSessionCount()}
-      p Total Time Recorded: !{model.getTotalSessionDuration().default}
+      p.alert.alert-info This is where you can view data about your practice habits.  
+
+      div.vert-spacer-big
+        form(method='GET', action='/sessions/analytics')
+          label(for='input-date-range') Select Date Range
+          input#input-date-range.form-control.flatpickr-range.add-bottom-space(type='text', name='dateRange' required=true, data-init-val=model.getDateRange())
+          button.btn.btn-primary(type='submit') Update
+
+      div.row
+        div.col-xs-6
+          div.well.text-center
+            strong Total sessions recorded: 
+            span &nbsp;!{model.getTotalSessionCount()}
+        div.col-xs-6
+          div.well.text-center
+            strong Total Time Recorded: 
+            span &nbsp;!{model.getTotalSessionDuration().default}
+
   div.row
     div.col-xs-12
       div.panel.panel-default
-        div.panel-heading.text-center Activities Over Time
+        div.panel-heading.text-center 
+          strong Activities Over Time (In Hours)
         div.panel-body
           canvas#total-activity-line-chart
   div.row
     div.col-xs-8
       div.panel.panel-default
-        div.panel-heading.text-center Hours Recorded Per Activity
+        div.panel-heading.text-center 
+          strong Recorded Activity (In Hours)
         div.panel-body
           canvas#total-activity-bar-chart
     div.col-xs-4
       div.panel.panel-default
-        div.panel-heading.text-center Percentage Recorded Per Activity
+        div.panel-heading.text-center 
+          strong Percentage Recorded Per Activity
         div.panel-body
           canvas#total-activity-pie-chart
 
@@ -39,4 +57,4 @@ block append scripts
     var ctx = $('#total-activity-pie-chart');
     window.totalActivityPieChart = new Chart(ctx, !{model.getTotalActivityPieData()});
     var ctx = $('#total-activity-line-chart');
-    window.totalActivityLineChart = new Chart(ctx, !{model.getTotalActivityLineData()});
+    window.totalActivityLineChart = new Chart(ctx, !{model.getTotalActivityLineData()})

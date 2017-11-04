@@ -21,4 +21,15 @@ $(function($){ // on document ready
       defaultDate: defaultDate,
     });
   });
+
+  $(".flatpickr-range").each(function(){
+    var iv = $(this).data('init-val');
+    var defaultDate = (iv == 'now' ? Date.now() : iv);
+
+    $(this).flatpickr({
+      mode: 'range',
+      altInput: true,
+      defaultDate: defaultDate,
+    });
+  });
 });

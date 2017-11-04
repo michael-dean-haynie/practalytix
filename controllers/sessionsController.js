@@ -438,9 +438,21 @@ exports.live_get = function(req, res, next){
 |-------------------
 */
 exports.analytics_get = function(req, res, next){
+  var range = req.query.dateRange;
+  var start = null;
+  var end = null;
+
+  if (null != range && range.length){
+    start = range.split(' ')[0];
+    end = range.split(' ')[2];
+
+    start = moment(start).tz(res.locals.authed_user.timezone).utc().toDate();
+    end = moment(end).tz(res.locals.authed_user.timezone).utc().toDate();
+  }
+
   async.parallel([
     function(callback){
-      Session.find({user: req.session.user_id})
+      var query = Session.find({user: req.session.user_id})
         .populate('user')
         .populate({
           path: 'blocks',
@@ -450,8 +462,14 @@ exports.analytics_get = function(req, res, next){
           populate: {
             path: 'activity',
           } 
-        })
-        .sort({start: 'asc'})
+        });
+
+        if (start && end){
+          query = query.where('start').gt(start);
+          query = query.where('start').lt(end);
+        }
+
+        query.sort({start: 'asc'})
         .exec(function(err, sessions){
           callback(err, sessions);
         });
@@ -465,8 +483,9 @@ exports.analytics_get = function(req, res, next){
       if (err) {return next(err);}
       var sessions = results[0];
       var activities = results[1];
+      var timezone = res.locals.authed_user.timezone;
 
-      viewModel = new AnalyticsViewModel(sessions, activities);
+      viewModel = new AnalyticsViewModel(sessions, activities, timezone, start, end);
 
       res.render('sessions/analytics', {navData: navData.get(res), model: viewModel});
   });
