@@ -1,0 +1,32 @@
+extends ../layout
+
+block content
+  div.row
+    div.col-xs-12
+      h3 Password Reset
+
+      if tokenIsValid
+        form(action='/auth/pw-rs-submit', method="POST")
+          div.form-group
+            label.control-label(for='input-password') New Password
+            input#input-password.form-control(type='password', name='password' required=true placeholder='Password' value=model.password ? model.password : '')
+          div.form-group
+            label.control-label(for='input-confirm-password') Confirm New Password
+            input#input-confirm-password.form-control(type='password', name='confirm_password' required=true placeholder='Confirm Password' value=model.confirm_password ? model.confirm_password : '')
+          div.form-group.button-list
+            button.btn.btn-primary(type='submit') Submit
+            a.btn.btn-default(href='/') Cancel
+          div.invisible
+            input#input-token(type='hidden' name='token' value=model.token)
+          div.form-group
+            if  errors && errors.length
+              div.alert.alert-danger
+                ul
+                  each error in errors
+                    li !{error.msg}
+
+
+      else
+        p.alert.alert-danger The supplied token is either expired or invalid.
+        div.button-list
+          a.btn.btn-default(href='/auth/pw-rs-request') Request New Token

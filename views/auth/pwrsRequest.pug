@@ -1,0 +1,28 @@
+extends ../layout
+
+block content
+  div.row
+    div.col-xs-12
+      h3 Password Reset
+
+      p Please enter the email address your account is registered under to recieve a reset token.
+
+      form(action='/auth/pw-rs-request', method="POST")
+        div.form-group
+          label.control-label(for='input-email') Email
+          input#input-email.form-control(type='email', name='email' required=true placeholder='Email' val=email ? email : '')
+        div.form-group.button-list
+          button.btn.btn-primary(type='submit') Send Reset Token
+          a.btn.btn-default(href='/auth/signin') Back To Sign In
+        div.form-group
+          if  errors && errors.length
+            div.alert.alert-danger
+              ul
+                each error in errors
+                  li !{error.msg}
+          if tokenSent
+            div.alert.alert-success
+              ul
+                li
+                  strong Sweet!&nbsp;
+                  span You've been sent an email with the password reset token.

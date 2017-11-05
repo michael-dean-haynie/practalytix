@@ -16,4 +16,9 @@ router.post('/signup', authController.signup_post);
 
 router.get('/signout', authController.signout_get);
 
+router.get('/pw-rs-request', authController.pwrsRequest_get);
+router.post('/pw-rs-request', authController.pwrsRequest_post);
+router.get('/pw-rs-submit', authController.pwrsSubmit_get);
+router.post('/pw-rs-submit', authController.pwrsSubmit_post);
+
 module.exports = router;

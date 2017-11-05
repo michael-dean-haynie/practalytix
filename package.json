@@ -23,6 +23,7 @@
     "morgan": "~1.8.1",
     "nodemailer": "^4.1.0",
     "pug": "~2.0.0-beta11",
+    "rand-token": "^0.3.0",
     "serve-favicon": "~2.4.2"
   },
   "devDependencies": {

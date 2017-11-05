@@ -19,10 +19,11 @@ var mailOptions = {
   text: 'Hi!',
 };
 
-transporter.sendMail(mailOptions, function(error, info){
-    if(error){
-        console.log(error);
-    }else{
-        console.log('Message sent: ' + info.response);
-    };
+transporter.sendMail(mailOptions, function(err, info){
+  if(err){
+    console.log('Damn. Something went wrong.');
+    console.log(err);
+  }else{
+    console.log('Message sent: ' + info.response);
+  }
 });
