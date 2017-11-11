@@ -125,10 +125,6 @@ SCHEMA
   - both have to be database driven (customizable not just enumed.)
     - this causes problems like what if you delete a block type? Does that delete all those blocks? Just deactivate it? 2 blocks that are labeled similarly may confuse things especially if they can get activated/deactivated.
 
-- THEN THE FUN BEGINS
-  - analytics page
-    - Line chart
-
 
 TODO:
 - dash needs to be renamed? More of a landing page for people to tell them what the app is about before we demand authentication
@@ -137,3 +133,24 @@ TODO:
 - ?.csv tool for spreadsheets. ex date session activity
   - probably not going to do.
 - Revisit style rules for beter mobile experience.
+
+
+
+Hosting setup for ubuntu
+- Install curl
+  $ sudo apt-get update
+  $ sudo apt-get install curl
+
+- Install git
+  $ sudo apt-get install git
+
+
+- Install node (https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-ubuntu-16-04   "How to Install Using a PPA")
+  $ cd ~
+  $ curl -sL https://deb.nodesource.com/setup_6.x -o nodesource_setup.sh
+  $ sudo bash nodesource_setup.sh
+  $ sudo apt-get install nodejs
+  $ sudo apt-get install build-essential
+sudo
+
+- Install mongodb
