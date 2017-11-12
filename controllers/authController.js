@@ -252,7 +252,8 @@ exports.pwrsRequest_post = function(req, res, next){
         });
 
         // determine protocol
-        var theProtocol = process.env.NODE_ENV == 'development' ? 'http' : 'https';
+        // var theProtocol = process.env.NODE_ENV == 'development' ? 'http' : 'https'; // was causing problems on prod.
+        var theProtocol = 'http';
         //determine domain
         var theDomain = process.env.NODE_ENV == 'development' ? process.env.DEV_DOMAIN : process.env.NODE_ENV == 'production' ? process.env.PROD_DOMAIN : null;
 
