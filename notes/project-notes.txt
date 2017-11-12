@@ -164,5 +164,13 @@ sudo
     $ sudo service mongod stop
     $ sudo service mongod restart
 
+- tmux
+  $ sudo apt-get install tmux
+  $ tmux
+  (start mongod and the node server in here  then hit ctrl + b and then d): https://askubuntu.com/a/220880
+  (now you can disconnect from the ssh session and you wont stop the daemons)
+
+
+
 
 - configure the .env file based off of the env.example file
