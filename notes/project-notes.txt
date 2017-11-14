@@ -199,6 +199,8 @@ sudo
   $ tmux
   (start mongod and the node server in here  then hit ctrl + b and then d): https://askubuntu.com/a/220880
   (now you can disconnect from the ssh session and you wont stop the daemons)
+  You can kill an existing session like so:
+  $ tmux kill-session -t 0
 
 
 
