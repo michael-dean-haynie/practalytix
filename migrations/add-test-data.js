@@ -182,9 +182,10 @@ function sessionMigration(callback){
           // some config
           var userId = userIds[userIndex];
           var daysRecording = 100;
-          var baseFreq = 0.66; // sessions per day
+          var baseFreq = (5/7); // sessions per day
           var maxLength = 120; // max length of session in minutes
-          var blockLength = 15;
+          var blockLengthBase = 10*60; // in seconds
+          var blockCountBase = 5;
 
           var pointer = moment({seconds: 0, milliseconds: 0}).subtract(daysRecording, 'days');
           var stop = moment().subtract(1, 'days');
@@ -199,9 +200,15 @@ function sessionMigration(callback){
                 return callback();
               }
 
-              var numOfBlocks = Math.floor(Math.random() * (6 - 1) + 1); //  1 <= rand <= 5
-              var sesStartMin = 7*60;
-              var sesStartMax = (19*60)-(maxLength);
+              var numOfBlocks = Math.floor(Math.random() * blockCountBase + 1); //  1 <= rand <= blockCountBase
+              var blockLengths = []; // in seconds
+              for(var bl = 0; bl < numOfBlocks; bl++){
+                blockLengths.push(Math.floor(Math.random() * blockLengthBase + 1)); // 1 <= rand <= blockLengthBase
+              }
+              bl = 0; // reset for next use on :226
+
+              var sesStartMin = 7*60; // 7:00 AM
+              var sesStartMax = (19*60)-(maxLength); // 7:00 PM
               var sesStart = Math.floor(Math.random() * (sesStartMax - sesStartMin) + sesStartMin);
 
               pointer.hour(0).minute(0).add(sesStart, 'minutes');
@@ -209,17 +216,17 @@ function sessionMigration(callback){
               var session = Session({
                 user: userId,
                 start: pointer.toDate(),
-                end: moment(pointer).add(blockLength*numOfBlocks, 'minutes'), // clone and calc session end
+                end: moment(pointer).add(blockLengths.reduce((a,b) => a+b), 'seconds').toDate(), // clone and calc session end
               });
 
               // console.log('user: ' + userId + ', session: '+ session._id);
 
               session.save(function(err){
                 async.whilst(
-                  function(){ return numOfBlocks > 0; },
+                  function(){ return bl < numOfBlocks; },
                   function(callback){
                     var blockStart = pointer.toDate();
-                    pointer.add(blockLength, 'minutes');
+                    pointer.add(blockLengths[bl], 'seconds');
                     var blockEnd = pointer.toDate();
                     var activityId = activityIds[Math.floor(Math.random()*activityIds.length)]; // random activity id
 
@@ -231,7 +238,7 @@ function sessionMigration(callback){
                     });
                     // console.log('block: ' + block._id + ', numOfBlocks: ' + numOfBlocks);
 
-                    block.save(function(err){ numOfBlocks--; callback(err); });
+                    block.save(function(err){ bl++; callback(err); });
                   },
                   function(err){ pointer.add(1, 'days'); callback(err); }
                 );

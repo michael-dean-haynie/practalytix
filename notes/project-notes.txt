@@ -127,12 +127,42 @@ SCHEMA
 
 
 TODO:
-- dash needs to be renamed? More of a landing page for people to tell them what the app is about before we demand authentication
-  - screenshots of analytics / data entry (.5hr)
-  - descriptions  (.5hr)
+- better user data for screenshots and test accounts.
 - ?.csv tool for spreadsheets. ex date session activity
   - probably not going to do.
 - Revisit style rules for beter mobile experience.
+
+QA
+  - [Implemented] Needs Tab titles
+  - Needs Favicon
+  - [FIXED] Users seem to be getting loged out? Maybe the expiration is way too low? Should be about 24 hours?
+    - May be because of having 2 different prod tabs open at once?
+    - Expiration was 2 minutes. updated to 24 hours
+  - dash
+    - [Implemented] rename to about
+    - needs real content
+  - signup
+    - [CAN'T REPRODUCE]initial sign in redirects to about page. Should be sessions/
+  - signin
+    - email is case sensitive (problem?)
+
+  - live recording
+    - [Implemented] panel headings should be bold
+
+  - session details
+    - [Implemented] panel headings should be bold
+
+  - edit session
+    - [Implemented] panel heading should be bold
+
+  - [NOT FIXING]Account details should show utc offset with timezone
+
+
+
+
+
+
+
 
 
 

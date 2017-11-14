@@ -10,11 +10,11 @@ var sessionsController = require('../controllers/sessionsController');
 |-------------------
 */
 router.get('/', function(req, res, next) {
-  res.redirect('/dash');
+  res.redirect('/about');
 });
 
-router.get('/dash', function(req, res, next){
-  res.render('dash', {title: "Title", navData: navData.get(res)});
+router.get('/about', function(req, res, next){
+  res.render('about', {navData: navData.get(res)});
 });
 
 module.exports = router;

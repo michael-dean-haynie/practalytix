@@ -44,7 +44,7 @@ app.use(cookieParser());
 app.use(expressValidator());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
-  cookie: { maxAge: 1000*60*2},
+  cookie: { maxAge: 1000*60*60*24}, // 24 hours (in miliseconds)
   secret: 'disbeedahsechuhrseekrett',
   resave: false,
   saveUninitialized: false,
