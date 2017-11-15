@@ -2,6 +2,12 @@
   margin: 20px;
 }
 
+#content-container{
+  max-width: 1000px;
+  min-width: 500px;
+  margin:auto;
+}
+
 h1{text-align: center;}
 
 .button-list .btn{
@@ -63,6 +69,11 @@ ul.session-list > li:last-child{
   border-radius:5px;
 }
 
+.card{
+  box-shadow: 0 4px 10px 0 rgba(0,0,0,0.2)
+}
 
-
+.force-fit{
+  width:100%;
+}
 /* bootstraap tweeks */

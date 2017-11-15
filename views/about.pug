@@ -1,5 +1,17 @@
 extends layout
 
 block content
-  h2 About Practalytix
-  p This is an open page that people don't have to be logged in to access. It will explan some of the features/functionality of practalytix and invite users to either sign in or sign up!
+  div.row
+    div.col.xs-12
+      h2.vert-spacer-big: em A simple and focused application for data-loving pianists.
+      div.panel.panel-info
+        div.panel-heading.text-center
+          span It's goal is to provide straight-forward analytical reports concerning the user's practice habits over time.
+        div.panel-body
+          img.img-responsive.force-fit.card(src='/images/analytics.png' alt='screenshot of analytics features')
+      
+      div.panel.panel-info
+        div.panel-heading.text-center
+          span To reach that goal, it removes the burden of manual data-entry with it's real-time live session recording feature.
+        div.panel-body
+          img.img-responsive.force-fit.card(src='/images/live.png' alt='screenshot of live recording feature')

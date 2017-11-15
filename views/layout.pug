@@ -47,7 +47,8 @@ html
               a(href=navData.authStatus.target) !{navData.authStatus.label}
 
     div#main.container-fluid
-      block content
+      div#content-container
+        block content
 
     block scripts
       script(src='/scripts/main.js')
